@@ -5,25 +5,19 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserModule } from './user/user.module';
 import { RouterModule } from '@angular/router';
-import { MenuComponent } from './menu/menu.component';
-import { HomeComponent } from './home/home.component';
-import { WallComponent } from './wall/wall.component';
-import { ProfileComponent } from './profile/profile.component';
+import {CoreModule} from "./core/core.module";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    MenuComponent,
-    HomeComponent,
-    WallComponent,
-    ProfileComponent
+    AppComponent
 
   ],
   imports: [
     BrowserModule,
     RouterModule,
     AppRoutingModule,
-    UserModule
+    UserModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
