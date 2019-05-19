@@ -1,19 +1,22 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
-var tweetSchema = require('../models/tweet');
-
-
-var tweet = mongoose.model('tweet',tweetSchema);
+var Tweet = require('../models/tweet');
 
 //get tweets 
-
 router.get('/', function(req, res, next) {
-   tweet.getTweets = function(callback,limit){
-        tweet.find(callback).limit(limit);
-    };
+  Tweet.find({},(err,users)=>{
+    res.json(users);
+  })
+})
+  router.post('/',(req,res)=>{
+    const newObj =req.body;
+  //console.log(newObj);
 
-  res.render('index', { title: 'Express' });
+    var tweet = new Tweet(newObj);
+  tweet.save(err=>{
+    if(err) throw err;
+    res.json({success:true});
+  });
 });
 
 module.exports = router;

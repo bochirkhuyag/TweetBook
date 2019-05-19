@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 //Tweet schema
-var tweetSchema = mongoose.Schema({ 
+var tweetSchema = new mongoose.Schema({ 
     content:{
         type:String,
         required : true
@@ -17,5 +17,4 @@ var tweetSchema = mongoose.Schema({
     likes:[{userName:String}],
     retweets:[{userName:String}]
 });
-
-module.exports=tweetSchema;
+module.exports=mongoose.model('tweets',tweetSchema);
