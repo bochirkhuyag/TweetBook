@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {CoreService} from "../core.service";
 
 @Component({
   selector: 'app-wall',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WallComponent implements OnInit {
 
-  constructor() { }
+  posts: any[];
+
+  constructor(private coreService: CoreService) { }
 
   ngOnInit() {
+    console.log("sure");
+    this.coreService.getPostsService()
+      .subscribe(posts => {
+
+        this.posts = posts;
+
+      });
   }
 
 }
