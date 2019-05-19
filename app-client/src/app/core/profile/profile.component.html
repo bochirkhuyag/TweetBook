@@ -1,3 +1,76 @@
-<p>
-  profile works!
-</p>
+<div id="posts-container" class="container-fluid container-posts">
+
+  <div class="row">
+    <!--middle container-->
+    <div class="col-md-8">
+      <div class="card-post" style="margin-top:16px;">
+        <h2>About</h2>
+        <ul class="profile-data">
+          <li><b>Username:</b> User</li>
+          <li><b>Fullname:</b> Asaad Saad</li>
+          <li><b>Description:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+        </ul>
+      </div>
+
+      <div class="card-post">
+        <div class="row">
+          <div class="col-xs-3 col-sm-2 text-center">
+            <a href="#" title="Profile">
+              <img src="../../../assets/images/avatar/female.jpg" alt="User name"
+                   class="rounded-circle img-user">
+            </a>
+            <h3 style="margin-top:10px;"><a href="#" title="Profile">User</a></h3>
+            <p><i>2h ago</i></p>
+          </div>
+          <div class="col-sm-9 col-sm-offset-1 data-post" data-ng-init="getPostReactionStats(post)">
+            <!--<div class="col-sm-8 col-sm-offset-1 data-post">-->
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <div class="reaction">
+              <span style="cursor: pointer" class="like-icon"><i class="fas fa-thumbs-up"></i></span> 3
+              <!--<span style="cursor: pointer" class="dislike-icon" data-ng-click="dislikePost(post)"><i class="fas fa-thumbs-down"></i></span> {{post.dislikesCount}}-->
+            </div>
+            <div class="comments" data-ng-init="getPostComments(post)">
+              <!--<div class="more-comments">View more comments</div>-->
+              <ul>
+                <li data-ng-repeat="comment in post.comments">
+                  <b>User:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </li>
+              </ul>
+              <form>
+                <input type="text" class="form-control" placeholder="Add a comment">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--right sidebar-->
+    <div class="col-lg-4 col-md-6 col-sm-8" data-ng-init="getUserProfiles()">
+      <div class="profiles">
+        <div class="profile-block" data-ng-repeat="user in users">
+          <div class="row">
+            <div class="col-md-4 text-center">
+              <a href="#" title="Profile">
+                <!--<img data-ng-if="user.gender === 'male'" src="../../../assets/images/avatar/female.jpg" alt="User name"-->
+                <!--class="rounded-circle img-user">-->
+                <img data-ng-if="user.gender === 'female'" src="../../../assets/images/avatar/female.jpg" alt="User name"
+                     class="rounded-circle img-user">
+              </a>
+            </div>
+            <div class="col-md-8">
+              <h3 style="margin-top:10px;font-size:12px;margin-bottom:10px;"><a href="#" title="Profile">Asaad Saad</a></h3>
+              <!--<button class="btn btn-small btn-sm">Add friend</button>-->
+              <button style="margin-left:5px;" class="btn btn-small btn-sm">Follow</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Close #posts-container-->
+  <div id="loading" style="display: none;">
+    <img src="./images/load.gif" alt="loader">
+  </div>
+</div>
