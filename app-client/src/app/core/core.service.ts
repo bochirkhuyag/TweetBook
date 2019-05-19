@@ -13,7 +13,6 @@ export class CoreService {
 
   public posts;
 
-  // Хувь хүний жагсаалт авах
   getPostsService(): Observable<any[]> {
     this.posts = this.http.get<any[]>(this.postsList);
     return this.posts;
