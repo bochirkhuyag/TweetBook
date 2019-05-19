@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-resgister',
@@ -9,16 +10,30 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class ResgisterComponent implements OnInit {
 
-  constructor() { }
+   constructor(private auth: AuthenticationService, private router: Router ) { }
 
   ngOnInit() {
   }
 
   registerForm = new FormGroup({
-    username:new FormControl(),
-    email:new FormControl(), 
+    userName: new FormControl(),
+    email: new FormControl(''),
+    firstName: new FormControl(),
+    lastName: new FormControl(),
     password: new FormControl('', [Validators.required]),
-    repeatPassword: new FormControl('', [Validators.required])
+    repeatPassword: new FormControl('', [Validators.required]),
+    gender: new FormControl(),
   })
+
+  register(){
+    this.auth.register(this.registerForm).subscribe(
+      () =>{
+        this.router.navigate(['/']);
+      },
+      err =>{
+        console.log('register error');
+      }
+    );
+  }
 
 }

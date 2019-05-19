@@ -1,35 +1,51 @@
-<h1>Register</h1>
+<div ng-show="error" class="alert alert-danger">{{error}}</div>
 
-    <form >
-      <table cellspacing="0" [formGroup]="registerForm">
-        <tr>
-          <td>
-              <input  placeholder="Username" formControlName="username" name="username" required>
-           
-          </td>
-        </tr>
-        <tr>
-          <td>
-              <input  placeholder="Email" formControlName="email" name="email" required>
-              <!-- <mat-error *ngIf="email.invalid && email.errors.email">Invalid email address</mat-error> -->
-            
-          </td>
-        </tr>
-        <tr>
-          <td>
-              <input  placeholder="Password" formControlName="password" type="password" name="password" required>
+<div class="center">
+    <div class="form-box" style="height:500px">
+        <div class="form-logo">
+            <h1 style="text-align: center" >Sign up</h1>
+        </div>
+        <form name="form" [formGroup]="registerForm" (ngSubmit)="register()">
+            <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Username"
+                    name="userName"
+                    formControlName="userName" required
+            >
+            <input type="email" class="form-control" placeholder="Email" name="email"
+            formControlName="email" required>
 
-          </td>
-        </tr>
-        <tr>
-          <td>
-              <input  placeholder="Reapet Password" formControlName="repeatPassword" type="password" name="repeatPassword" required>
-              <!-- <mat-error *ngIf="repeatPassword.invalid && repeatPassword.errors.passwordMatch">Password mismatch</mat-error> -->
-        
-          </td>
-        </tr>
-      </table>
-    </form>
+            <input type="text" class="form-control" placeholder="First name" name="firstName"
+            formControlName="firstName" required>
+            <input type="text" class="form-control" placeholder="Last name" name="lastName"
+            formControlName="lastName" required>
+            <input type="password" class="form-control" placeholder="Password" name="password"
+            formControlName="password" required>
 
-    <!-- <button mat-raised-button (click)="register()" color="primary">Register</button> -->
-    <span>Already have an account ? <a [routerLink]="['/login']">login</a> here</span>
+            <div style="margin-top:10px;">
+                <div class="form-check-inline">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="female" formControlName="gender" value="female" ng-required="!userSignUpData.gender">
+                        <label class="custom-control-label" for="female">Female</label>
+                    </div>
+                </div>
+                <div class="form-check-inline">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="male" formControlName="gender" name="gender" value="male" ng-required="!userSignUpData.gender">
+                        <label class="custom-control-label" for="male">Male</label>
+                    </div>
+                </div>
+            </div>
+
+            <input style="margin-top:10px;" type="submit" class="btn btn-social" value="SIGN UP" >
+        </form>
+        <a  [routerLink]="['/login']" class="login-action" title="login">
+            <p>Have an account?</p>
+        </a>
+    </div><!--close form-box-->
+</div>
+
+
+
+
