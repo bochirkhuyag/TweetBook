@@ -1,0 +1,68 @@
+
+GET http://localhost:3000/api/tweets HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/tweets/user/12 HTTP/1.1
+
+
+###
+
+//5ce1b529d20f444cb8eb1061  12
+//5ce1b588e924e8050cef45fc thanh
+//5ce1b76ce7d23839ec53cfed test1
+
+POST http://localhost:3000/api/tweets
+content-type: application/json
+
+{
+    "content":"this is my 2nd tweet",
+    "createdUser":{"_id":"5ce1b529d20f444cb8eb1061","userName":"12"},
+    "comments":[{"userId":"5ce1b529d20f444cb8eb1061",
+        "userName":"12","comment":"that's good",
+        "likes":[{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}]},
+        {"userId":"5ce1b588e924e8050cef45fc","userName":"thanh","comment":"yep","likes":[{"userId":"5ce1b588e924e8050cef45fc","userName":"thanh"}]}],
+    "likes":[{"userId":"5ce1b588e924e8050cef45fc","userName":"thanh"},{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}],
+    "retweets":[{"userId":"5ce1b588e924e8050cef45fc","userName":"thanh"},{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}]
+}
+
+###
+DELETE http://localhost:3000/api/tweets/5ce1ce8465940e3bb8b9c069 HTTP/1.1
+
+###
+
+PUT http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072
+content-type: application/json
+
+{
+    "content":"this is my 3rd tweet"    
+}
+
+###
+PUT http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/like/
+content-type: application/json
+
+{
+    "userId":"5ce1b76ce7d23839ec53cfed",
+    "userName":"test1"
+}
+
+###
+DELETE http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/like/
+content-type: application/json
+
+{
+    "userId":"5ce1b76ce7d23839ec53cfed",
+    "userName":"12"
+}
+
+###
+PUT http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/comment HTTP/1.1
+Content-Type: application/json
+
+{
+    "userId":"5ce1b588e924e8050cef45fc",
+    "userName":"thanh",
+    "comment":"nice",
+    "likes":[]
+}

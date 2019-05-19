@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 //user schema
 mongoose.set('useCreateIndex', true);
-var userSchema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({ 
     userName:{type:String,index:true,unique:true,required:true},
     password:{type:String,required:true},
     picture:{type:String},
@@ -17,10 +17,10 @@ userSchema.index({userName:1,email:1});
 
 //hash the password
 userSchema.pre('save',function(next){
-    bcrypt.hash(this.password,10,(err,hash)=>{
+   bcrypt.hash(this.password,10,(err,hash)=>{
         this.password=hash;
         next();
-    });
+   });
 
 });
 

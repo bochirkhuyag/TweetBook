@@ -1,0 +1,15 @@
+{
+    "content":"this is my 1st tweet",
+    "createdUser":{"_id":"5ce1b529d20f444cb8eb1061","userName":"12"},
+    "comments":[{"userId":"5ce1b529d20f444cb8eb1061",
+        "userName":"12","comment":"that's good",
+        "likes":[{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}]},
+        {"userId":"5ce1b588e924e8050cef45fc","userName":"thanh","comment":"yep","likes":[{"userId":"5ce1b588e924e8050cef45fc","userName":"thanh"}]}],
+    "likes":[{"userId":"5ce1b588e924e8050cef45fc","userName":"thanh"},{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}],
+    "retweets":[{"userId":"5ce1b588e924e8050cef45fc","userName":"thanh"},{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}]
+}
+/*
+*/
+//5ce1b529d20f444cb8eb1061  12  "userId":"5ce1b529d20f444cb8eb1061","userName":"12"
+//5ce1b588e924e8050cef45fc thanh  "userId":"5ce1b588e924e8050cef45fc","userName":"thanh"
+//5ce1b76ce7d23839ec53cfed test1
