@@ -32,7 +32,20 @@ router.post('/',(req,res)=>{
     var user = new User(newObj);
     //console.log(user);
     user.save(err=>{
-        if(err) throw err;
+        if(err) res.send(err);
+        res.json({success:true});
+    });
+});
+
+//register user
+router.post('/register',(req,res)=>{
+    const newObj =req.body;
+    //console.log(newObj);
+    var user = new User(newObj);
+    //console.log(user);
+    user.save(err=>{
+        if(err) res.send(err);
+        
         res.json({success:true});
     });
 });
