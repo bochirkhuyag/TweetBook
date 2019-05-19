@@ -13,7 +13,6 @@ export class WallComponent implements OnInit {
   constructor(private coreService: CoreService) { }
 
   ngOnInit() {
-    console.log("sure");
     this.coreService.getPostsService()
       .subscribe(posts => {
 
