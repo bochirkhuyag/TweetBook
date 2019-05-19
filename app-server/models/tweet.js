@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-
+var Schema = mongoose.Schema;
 //Tweet schema
 var tweetSchema = new mongoose.Schema({ 
     content:{
@@ -11,10 +11,15 @@ var tweetSchema = new mongoose.Schema({
         default:Date.now
     },
     createdUser:{
-        _id:mongoose.Schema.Types.ObjectId
+        "_id":{type: Schema.Types.ObjectId, ref: 'users'},
+        "userName":String
     },
-    comments: [{userName:String,comment:String, commentedAt:Date}],
-    likes:[{userName:String}],
-    retweets:[{userName:String}]
+    comments: [{userId:{type: Schema.Types.ObjectId, ref: 'users'},userName:String,comment:String, commentedAt:{type:Date,default:Date.now()},likes:[{userId:{type: Schema.Types.ObjectId, ref: 'users'},userName:String}]}],
+    likes:[{userId:{type: Schema.Types.ObjectId, ref: 'users'},userName:String}],
+    retweets:[{userId:{type: Schema.Types.ObjectId, ref: 'users'},userName:String}],
+    retweeted:{
+        tweetId:{type:Schema.Types.ObjectId,ref:'tweets'}
+    }
 });
+
 module.exports=mongoose.model('tweets',tweetSchema);
