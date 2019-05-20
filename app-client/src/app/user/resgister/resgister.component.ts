@@ -26,6 +26,8 @@ export class ResgisterComponent implements OnInit {
     userName: new FormControl(),
     email: new FormControl(""),
     password: new FormControl("", [Validators.required]),
+    firstName: new FormControl(),
+    lastName: new FormControl(),
     repeatPassword: new FormControl("", [Validators.required]),
     gender: new FormControl()
   });

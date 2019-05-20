@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserModule } from 'src/app/user/user.module';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  user;
+
+  constructor(private userService:UserService) { }
 
   ngOnInit() {
+    this.userService.getUser(this.user.id).subscribe(
+      (response) =>{
+        console.log(response);
+      }
+    )
   }
 
 }

@@ -5,10 +5,12 @@ mongoose.set('useCreateIndex', true);
 var userSchema = new mongoose.Schema({ 
     userName:{type:String,index:true,unique:true,required:true},
     password:{type:String,required:true},
+    firstName:{type:String},
+    lastName:{type:String},
     picture:{type:String},
     createdDate:{type:Date,default:Date.now()},
     followers: [{_id:{type: mongoose.Schema.Types.ObjectId, ref: 'users'}, userName:String, followedAt:{type:Date,default:Date.now()}}],
-    following: [{_id:{type: mongoose.Schema.Types.ObjectId, ref: 'users'}, userName:String, followedAt:{type:Date,default:Date.now()}}],
+    following: [{_id:{type: mongoose.Schema.Types.ObjectId, ref: 'users'}, userName:String, firstName:String, lastName:String, followedAt:{type:Date,default:Date.now()}}],
     email:{type:String,required:true,unique:true}
 });
 
