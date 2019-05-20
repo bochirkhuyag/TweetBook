@@ -21,4 +21,8 @@ export class WallComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+
+  }
+
 }
