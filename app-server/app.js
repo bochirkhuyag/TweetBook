@@ -9,7 +9,7 @@ var usersRouter = require('./routes/users');
 const cors = require('cors');
 
 // connect to mongoose
-mongoose.connect('mongodb+srv://huygaa:pass@cluster0-efgxs.mongodb.net/TweetBook?retryWrites=true',{useNewUrlParser:true});
+mongoose.connect(MONGO_CONN_STRING,{useNewUrlParser:true});
 var db = mongoose.connection;
 var Tweet = require('./models/tweet');
 
