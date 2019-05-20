@@ -17,10 +17,10 @@ router.get('/:id',(req,res)=>{
   })
 })
 //select by user
-router.get('/user/:userName', function(req, res) {
-      Tweet.find({'createdUser.userName':req.params.userName},(err,tweets)=>{
-        res.json(tweets);
-      })
+router.get('/user/:userId', function(req, res) {
+  Tweet.find({'createdUser.userId':req.params.userId},(err,tweets)=>{
+    res.json(tweets);
+  })
 });
 
 router.delete('/:tweetId',(req,res)=>{
@@ -32,9 +32,9 @@ router.delete('/:tweetId',(req,res)=>{
 })
 
 router.post('/',(req,res)=>{
-    const newObj =req.body;
-    //console.log(newObj);
-    var tweet = new Tweet(newObj);
+  const newObj =req.body;
+  //console.log(newObj);
+  var tweet = new Tweet(newObj);
   tweet.save(err=>{
     if(err) throw err;
     res.json({success:true});
@@ -49,15 +49,15 @@ router.put('/:tweetId',(req,res)=>{
   })
 });
 
-//like on tweet post 
+//like on tweet post
 
 router.put('/:tweetId/like',(req,res)=>{
   const user = req.body;
   //console.log(user);
-    Tweet.updateOne({_id:req.params.tweetId,'likes.userName':{$ne:user.userName}},{$push:{likes:{'userName':user.userName,'userId':user.userId}}},(err,doc)=>{
-      if(err) throw err;
-      res.json({success:true});
-    })
+  Tweet.updateOne({_id:req.params.tweetId,'likes.userId':{$ne:user.userId}},{$push:{likes:{'userName':user.userName,'userId':user.userId}}},(err,doc)=>{
+    if(err) throw err;
+    res.json({success:true});
+  })
 })
 
 //dislike on tweet post
@@ -65,36 +65,49 @@ router.put('/:tweetId/like',(req,res)=>{
 router.delete('/:tweetId/like',(req,res)=>{
   const user = req.body;
   //console.log(req.body);
-    Tweet.updateOne({_id:req.params.tweetId,'likes.userName':{$eq:user.userName}},{$pull:{likes:{'userName':user.userName}}},(err,doc)=>{
-      if(err) throw err;
-      res.json({success:true});
-    })
+  Tweet.updateOne({_id:req.params.tweetId,'likes.userId':{$eq:user.userId}},{$pull:{likes:{'userName':user.userName,'userId':userId}}},(err,doc)=>{
+    if(err) throw err;
+    res.json({success:true});
+  })
 });
 
 //comment on post
 router.put('/:tweetId/comment',(req,res)=>{
   const comment = req.body;
-  console.log(comment);
+  //console.log(comment);
   Tweet.updateOne({_id:req.params.tweetId},{$push:{comments:comment}},(err,doc)=>{
     if(err) throw err;
     res.json({success:true});
   });
 
-//delete comment from post 
-router.delete('/:tweetId/comment/:commentId',(req,res)=>{
-  console.log(req.params.tweetId);
-  console.log(req.params.commentId);
-  Tweet.updateOne({_id:req.params.tweetId},{$pull:{comments:{'_id':req.params.commentId}}},(err,doc)=>{
-    if(err) throw err;
-    res.json({success:true});
+//delete comment from post
+  router.delete('/:tweetId/comment/:commentId',(req,res)=>{
+
+    Tweet.updateOne({_id:req.params.tweetId},{$pull:{comments:{'_id':req.params.commentId}}},(err,doc)=>{
+      if(err) throw err;
+      res.json({success:true});
+    });
   });
 });
 
+//like inside post comments
+
+router.put('/:tweetId/comment/:commentId/like',(req,res)=>{
+  const user = req.body;
+  console.log(user);
+  Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId,'comments.likes.userId':{$ne:user.userId}},{$push:{'comments.likes':{'userName':user.userName,'userId':user.userId}}},(err,doc)=>{
+    if(err) throw err;
+    res.json({success:true});
+  })
 })
 
+//stat
+/*
+router.get('/:userName/stats',(req,res)=>{
+ const tweets=Tweet.find({'createdUser.userName':req.params.userName}).count();
 
-
-
-
+})
+*/
+//
 
 module.exports = router;
