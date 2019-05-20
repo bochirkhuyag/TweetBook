@@ -30,6 +30,10 @@ export class AuthenticationService{
     return localStorage.getItem('token');
   }
 
+  logout(){
+    localStorage.removeItem('token');
+  }
+
   getUserDetails(uid: string): Observable<any[]> {
     const client = this.http.get('/api/users/' + uid);
 
@@ -50,11 +54,10 @@ export class AuthenticationService{
     return this.registerOrLogin(user, '/api/users/login');
   }
 
-  private registerOrLogin(user: FormGroup, url:string): Observable<any>{
+  private registerOrLogin(user: FormGroup, url: string): Observable<any>{
     const client = this.http.post(url, user.value);
     const request = client.pipe(
       map((data: TokenResponse) =>{
-        //console.log(data);
         if (data.token) {
           this.setToken(data.token);
         }

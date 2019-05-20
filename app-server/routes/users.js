@@ -5,6 +5,9 @@ var mongoose = require('mongoose');
 
 var bcrypt = require('bcrypt');
 
+const jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+
+
 //get users
 router.get('/', function(req, res) {
     User.find({},(err,users)=>{
@@ -46,9 +49,11 @@ router.post('/register',(req,res)=>{
     var user = new User(newObj);
     //console.log(user);
     user.save(err=>{
-        if(err) res.send(err);
-
-        res.json({success:true});
+        if(err) res.send({"error": "User already existed."});
+        else {
+            res.json({token:createToken(user)});  
+        }
+        
     });
 });
 //Login
@@ -59,12 +64,11 @@ router.post('/login',(req,res)=>{
         if(err) {
             res.send({"error": "User does not exist."});
         }
-        if(user) {
-           
+        if(user) {           
             bcrypt.compare(req.body.password, user.password, (err, response)=>{
                 console.log('login err' + response);
                 if(response) {
-                    res.json(user);                    
+                    res.json({token:createToken(user)});                    
                 } else {
                     console.log('login err');
                     res.send({"error": "Password is incorrect."});
@@ -74,6 +78,17 @@ router.post('/login',(req,res)=>{
 
     })
 });
+
+function createToken(user) {
+    const SECRET = 'SECRET';
+    const payload = {user: user.id};
+    console.log("key " + SECRET);
+    const token = jwt.sign(payload, SECRET, {
+        expiresIn: 1440000 // expires in 24 
+        });
+
+    return token;
+};
 
 //update user
 router.put('/:userId',(req,res)=>{
