@@ -25,8 +25,6 @@ export class ResgisterComponent implements OnInit {
   registerForm = new FormGroup({
     userName: new FormControl(),
     email: new FormControl(""),
-    firstName: new FormControl(),
-    lastName: new FormControl(),
     password: new FormControl("", [Validators.required]),
     repeatPassword: new FormControl("", [Validators.required]),
     gender: new FormControl()
