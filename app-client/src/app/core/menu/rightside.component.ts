@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  selector: 'app-rightside',
+  templateUrl: './rightside.component.html',
+  styleUrls: ['./rightside.component.css']
 })
-export class MenuComponent implements OnInit {
+export class RightSideComponent implements OnInit {
 
   user: Object;
-  constructor(private authenticationService:AuthenticationService) { }
+  constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.user = Object.create({id:'5ce2ff4c50e4b95988b9dce1'});

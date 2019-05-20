@@ -1,0 +1,21 @@
+
+    <div class="profiles">
+      <div class="profile-block" *ngFor="let item of user.following">
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <a href="#" title="Profile">
+              <!--<img data-ng-if="user.gender === 'male'" src="../../../assets/images/avatar/female.jpg" alt="User name"-->
+                   <!--class="rounded-circle img-user">-->
+              <img data-ng-if="item.gender === 'female'" src="../../../assets/images/avatar/female.jpg" alt="User name"
+                   class="rounded-circle img-user">
+            </a>
+          </div>
+          <div class="col-md-8">
+            <h3 style="margin-top:10px;font-size:12px;margin-bottom:10px;"><a href="#" title="Profile">{{item.firstName}} {{item.lastName}}</a></h3>
+            <!--<button class="btn btn-small btn-sm">Add friend</button>-->
+            <button style="margin-left:5px;" class="btn btn-small btn-sm">Follow</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
