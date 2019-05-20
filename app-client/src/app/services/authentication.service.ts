@@ -34,14 +34,19 @@ export class AuthenticationService{
 
   }
 
-  register(user: FormGroup): Observable<any>{
-    console.log('sending request...');
-    console.log(this.http);
-    const client = this.http.post('/api/users/register', user.value);//{userName:"fds", email:"fd"});
+  public register(user: FormGroup): Observable<any>{
+    return this.registerOrLogin(user, '/api/users/register');
+  }
+
+  public login(user: FormGroup): Observable<any>{
+    return this.registerOrLogin(user, '/api/users/login');
+  }
+
+  private registerOrLogin(user: FormGroup, url:string): Observable<any>{
+    const client = this.http.post(url, user.value);
     const request = client.pipe(
       map((data: TokenResponse) =>{
-        console.log('Receiving respose...');
-        console.log(data);
+        //console.log(data);
         if (data.token) {
           this.setToken(data.token);
         }
