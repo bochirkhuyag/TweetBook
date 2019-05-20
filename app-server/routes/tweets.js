@@ -82,7 +82,7 @@ router.put('/:tweetId/comment',(req,res)=>{
 
 //delete comment from post
   router.delete('/:tweetId/comment/:commentId',(req,res)=>{
-
+    console.log(req.params.commentId);
     Tweet.updateOne({_id:req.params.tweetId},{$pull:{comments:{'_id':req.params.commentId}}},(err,doc)=>{
       if(err) throw err;
       res.json({success:true});
@@ -95,11 +95,22 @@ router.put('/:tweetId/comment',(req,res)=>{
 router.put('/:tweetId/comment/:commentId/like',(req,res)=>{
   const user = req.body;
   console.log(user);
-  Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId,'comments.likes.userId':{$ne:user.userId}},{$push:{'comments.likes':{'userName':user.userName,'userId':user.userId}}},(err,doc)=>{
+  Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId,'comments.likes.userId':{$ne:user.userId}},{$push:{'comments.$.likes':{'userName':user.userName,'userId':user.userId}}},(err,doc)=>{
     if(err) throw err;
     res.json({success:true});
   })
-})
+});
+
+//dislike inside post comments
+router.delete('/:tweetId/comment/:commentId/like',(req,res)=>{
+  const user = req.body;
+  console.log(user);
+  Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId,'comments.likes.userId':{$eq:user.userId}},{$pull:{'comments.$.likes':{'userName':user.userName,'userId':user.userId}}},(err,doc)=>{
+    if(err) throw err;
+    res.json({success:true});
+  })
+});
+
 
 //stat
 /*
