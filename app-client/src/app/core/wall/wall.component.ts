@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CoreService} from "../core.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Tweet} from "../../models/post";
+import {Message, MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-wall',
@@ -12,8 +13,9 @@ export class WallComponent implements OnInit {
 
   posts: any[];
   postCreateForm: FormGroup;
+  msgs: Message[] = [];
 
-  constructor(private coreService: CoreService) { }
+  constructor(private coreService: CoreService, private messageService: MessageService) { }
 
   ngOnInit() {
 
@@ -41,10 +43,10 @@ export class WallComponent implements OnInit {
           // this.msgs.push({severity: 'error', summary: error});
         },
         () => {
-          console.log('success');
           this.getWallPosts();
-          // this.msgs = [];
-          // this.msgs.push({severity: 'success', summary: 'Success Message', detail: 'Order submitted'});
+          this.msgs = [];
+          this.messageService.add({severity:'success', summary:'', detail:'Post success!'});
+          this.postCreateForm.reset();
         }
       );
     }
