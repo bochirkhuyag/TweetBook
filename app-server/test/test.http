@@ -10,14 +10,14 @@ GET http://localhost:3000/api/tweets/user/12 HTTP/1.1
 
 //5ce1b529d20f444cb8eb1061  12
 //5ce1b588e924e8050cef45fc thanh
-//5ce1b76ce7d23839ec53cfed test1
+//s test1
 
 POST http://localhost:3000/api/tweets
 content-type: application/json
 
 {
-  "content":"this is my 2nd tweet",
-  "createdUser":{"_id":"5ce1b529d20f444cb8eb1061","userName":"12"},
+  "content":"this is my 5th tweet",
+  "createdUser":{"_id":"5ce1b76ce7d23839ec53cfed","userName":"test1"},
   "comments":[{"userId":"5ce1b529d20f444cb8eb1061",
     "userName":"12","comment":"that's good",
     "likes":[{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}]},
@@ -89,3 +89,9 @@ content-type: application/json
   "userId":"5ce1b76ce7d23839ec53cfed",
   "userName":"test1"
 }
+
+###
+GET http://localhost:3000/api/tweets/5ce1b76ce7d23839ec53cfed/stats HTTP/1.1
+
+###
+GET http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/

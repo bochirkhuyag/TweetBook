@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 var Tweet = require('../models/tweet');
 var mongoose = require('mongoose');
+var User = require('../models/user')
 
-//get tweets 
+//get tweets
 router.get('/', function(req, res) {
   Tweet.find({},(err,tweets)=>{
     res.json(tweets);
@@ -113,12 +114,43 @@ router.delete('/:tweetId/comment/:commentId/like',(req,res)=>{
 
 
 //stat
-/*
-router.get('/:userName/stats',(req,res)=>{
- const tweets=Tweet.find({'createdUser.userName':req.params.userName}).count();
 
-})
-*/
-//
+router.get('/:userId/stats',(req,res)=>{
+  const stat = {
+    "tweets":0,
+    "likes":0,
+    "followers":0,
+    "following":0
+  };
+  const id = req.params.userId;
+  Tweet.find({ 'createdUser._id':id }).countDocuments().exec().then((doc)=>{
+    stat.tweets=doc;
+    //total likes for all posts
+    Tweet.aggregate([
+      {$match:{'createdUser._id':mongoose.Types.ObjectId(id)}},
+      {$unwind:{path:'$likes'}},
+      {$group:{_id:{'likes':'$likes._id'},count:{$sum:1}}},
+      {$group:{_id:null,'total':{$sum:'$count'}}},
+      {$project:{_id:0,total:1}}
+    ],(err,result)=>{
+      if (err) throw err;
+      if(result.length !=0) stat.likes = result[0].total;
+      User.aggregate([
+        {$match:{_id:mongoose.Types.ObjectId(id)}},
+        {$project:{_id:0,followers:{$cond: {if: {$isArray:'$followers'}, then: {$size: '$followers'},else: 0}}, following:{$cond: {if: {$isArray:'$following'}, then: {$size: '$following'},else: 0}}}}
+      ],(err,result)=>{
+        if(err) throw err;
+        //console.log(result);
+        if(result.length!=0){
+          stat.followers = result[0].followers;
+          stat.following = result[0].following;
+        }
+        res.json(stat);
+      })
+    });
+
+  });
+});
+
 
 module.exports = router;
