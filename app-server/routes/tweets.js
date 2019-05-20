@@ -6,7 +6,7 @@ var User = require('../models/user')
 
 //get tweets
 router.get('/', function(req, res) {
-    Tweet.find({}).sort({'createdDate':-1}).exec((err,tweets)=>{
+    Tweet.find({}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user').exec((err,tweets)=>{
         if(tweets.length>0) res.json(tweets);
         else res.json({success:false});
     })
@@ -16,7 +16,7 @@ router.get('/', function(req, res) {
 router.get('/:id',(req,res)=>{
     const objId = new mongoose.Types.ObjectId(req.params.id);
 
-    Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).exec((err,tweet)=>{
+    Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user').exec((err,tweet)=>{
         res.json(tweet);
     })
 });
@@ -32,17 +32,14 @@ router.get('/self/:userId', function (req, res) {
 //select by user
 router.get('/user/:userId', function(req, res) {
     const objId = new mongoose.Types.ObjectId(req.params.id);
-    const userArray=[];
-    User.find({_id:objId},{followers:1,_id:0}).sort({'createdDate':-1}).exec((err,result)=>{
-        if(result.followers !== undefined && result.followers.length!=0) userArray.push(result.followers);
-        console.log(result);
+    User.find({_id:objId}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user').exec((err,result)=>{
         res.json(result)
     });
     /*
-      Tweet.find({'createdUser.userId':{$in:[User.find({_id:objId},{followers:1,_id:0}).toArray()]}},(err,tweets)=>{
-            res.json(tweets);
-          })
-          */
+    Tweet.find({'createdUser.userId':{$in:[User.find({_id:objId},{followers:1,_id:0}).toArray()]}},(err,tweets)=>{
+          res.json(tweets);
+        })
+      */
 
 });
 
@@ -75,9 +72,9 @@ router.put('/:tweetId',(req,res)=>{
 //like on tweet post
 
 router.put('/:tweetId/like',(req,res)=>{
-    const user = req.body;
+    const userObj = mongoose.Types.ObjectId(req.body.user);
     //console.log(user);
-    Tweet.updateOne({_id:req.params.tweetId,'likes.userId':{$ne:user.userId}},{$push:{likes:{'userName':user.userName,'userId':user.userId}}},(err,doc)=>{
+    Tweet.updateOne({_id:req.params.tweetId,'likes.user':{$ne:userObj}},{$push:{likes:{'user':userObj}}},(err,doc)=>{
         if(err) throw err;
         res.json({success:true});
     })
@@ -86,9 +83,9 @@ router.put('/:tweetId/like',(req,res)=>{
 //dislike on tweet post
 
 router.delete('/:tweetId/like',(req,res)=>{
-    const user = req.body;
+    const userObj = mongoose.Types.ObjectId(req.body.user);
     //console.log(req.body);
-    Tweet.updateOne({_id:req.params.tweetId,'likes.userId':{$eq:user.userId}},{$pull:{likes:{'userName':user.userName,'userId':userId}}},(err,doc)=>{
+    Tweet.updateOne({_id:req.params.tweetId,'likes.user':{$eq:userObj}},{$pull:{likes:{'user':userObj}}},(err,doc)=>{
         if(err) throw err;
         res.json({success:true});
     })
@@ -113,12 +110,13 @@ router.put('/:tweetId/comment',(req,res)=>{
     });
 });
 
+//working until this
 //like inside post comments
 
 router.put('/:tweetId/comment/:commentId/like',(req,res)=>{
-    const user = req.body;
-    console.log(user);
-    Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId,'comments.likes.userId':{$ne:user.userId}},{$push:{'comments.$.likes':{'userName':user.userName,'userId':user.userId}}},(err,doc)=>{
+    const userObj = mongoose.Types.ObjectId(req.body.user);
+    //console.log(user);
+    Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId,'comments.likes.user':{$ne:userObj}},{$push:{'comments.$.likes':{'user':userObj}}},(err,doc)=>{
         if(err) throw err;
         res.json({success:true});
     })

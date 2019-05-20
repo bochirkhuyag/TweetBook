@@ -3,86 +3,107 @@ GET http://localhost:3000/api/tweets/ HTTP/1.1
 
 ###
 
-GET http://localhost:3000/api/tweets/user/12 HTTP/1.1
+GET http://localhost:3000/api/tweets/user/5ce1b588e924e8050cef45fc HTTP/1.1
 
 
 ###
 
 //5ce1b529d20f444cb8eb1061  12
 //5ce1b588e924e8050cef45fc thanh
-//s test1
+//5ce1b76ce7d23839ec53cfed test1
 
 POST http://localhost:3000/api/tweets
 content-type: application/json
 
 {
   "content":"this is my 5th tweet",
-  "createdUser":{"_id":"5ce1b76ce7d23839ec53cfed","userName":"test1"},
-  "comments":[{"userId":"5ce1b529d20f444cb8eb1061",
-    "userName":"12","comment":"that's good",
-    "likes":[{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}]},
-    {"userId":"5ce1b588e924e8050cef45fc","userName":"thanh","comment":"yep","likes":[{"userId":"5ce1b588e924e8050cef45fc","userName":"thanh"}]}],
-  "likes":[{"userId":"5ce1b588e924e8050cef45fc","userName":"thanh"},{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}],
-  "retweets":[{"userId":"5ce1b588e924e8050cef45fc","userName":"thanh"},{"userId":"5ce1b529d20f444cb8eb1061","userName":"12"}]
+  "createdUser":{"user":"5ce1b76ce7d23839ec53cfed"},
+  "comments":[{"user":"5ce1b529d20f444cb8eb1061","comment":"that's good","likes":[{"user":"5ce1b529d20f444cb8eb1061"}]},
+    {"user":"5ce1b588e924e8050cef45fc","comment":"yep","likes":[{"user":"5ce1b588e924e8050cef45fc"}]}],
+  "likes":[{"user":"5ce1b588e924e8050cef45fc"},{"user":"5ce1b529d20f444cb8eb1061"}],
+  "retweets":[{"user":"5ce1b588e924e8050cef45fc"},{"user":"5ce1b529d20f444cb8eb1061"}]
 }
 
 ###
-DELETE http://localhost:3000/api/tweets/5ce1ce8465940e3bb8b9c069 HTTP/1.1
+DELETE http://localhost:3000/api/tweets/5ce32a410a93267b3cd7299b HTTP/1.1
 
 ###
 
-PUT http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072
+PUT http://localhost:3000/api/tweets/5ce32aac0a93267b3cd729a5
 content-type: application/json
 
 {
-  "content":"this is my 3rd tweet"
+  "content":"this is my 1st tweet"
 }
 
 ###
-PUT http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/like/
+PUT http://localhost:3000/api/tweets/5ce32aac0a93267b3cd729a5/like/
 content-type: application/json
 
 {
-  "userId":"5ce1b76ce7d23839ec53cfed",
-  "userName":"test1"
+  "user":"5ce1b529d20f444cb8eb1061"
 }
 
 ###
-DELETE http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/like/
+DELETE http://localhost:3000/api/tweets/5ce32aac0a93267b3cd729a5/like/
 content-type: application/json
 
 {
-  "userId":"5ce1b76ce7d23839ec53cfed",
-  "userName":"12"
+  "user":"5ce1b588e924e8050cef45fc"
 }
 
 ###
-PUT http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/comment HTTP/1.1
+PUT http://localhost:3000/api/tweets/5ce32aac0a93267b3cd729a5/comment HTTP/1.1
 Content-Type: application/json
 
 {
-  "userId":"5ce1b588e924e8050cef45fc",
-  "userName":"thanh",
+  "user":"5ce1b588e924e8050cef45fc",
   "comment":"nice one dude",
   "likes":[]
 }
 
 ###
-DELETE http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/comment/5ce1e79a1cd7fd5e4c66d386 HTTP/1.1
+DELETE http://localhost:3000/api/tweets/5ce32aac0a93267b3cd729a5/comment/5ce32aac0a93267b3cd729a6 HTTP/1.1
 
 ###
 
-PUT http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/comment/5ce1d6f86d5d3f6d8064a253/like
+//until this
+PUT http://localhost:3000/api/tweets/5ce32aac0a93267b3cd729a5/comment/5ce32aac0a93267b3cd729a8/like
 content-type: application/json
 
 {
-  "userId":"5ce1b588e924e8050cef45fc",
-  "userName":"thanh"
+  "user":"5ce1b76ce7d23839ec53cfed"
 }
 
 ###
 
-DELETE  http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/comment/5ce1d6f86d5d3f6d8064a253/like
+DELETE  http://localhost:3000/api/tweets/5ce32aac0a93267b3cd729a5/comment/5ce1d6f86d5d3f6d8064a253/like
+content-type: application/json
+
+{
+  "user":"5ce1b76ce7d23839ec53cfed"
+}
+
+###
+GET http://localhost:3000/api/tweets/5ce1b588e924e8050cef45fc/stats HTTP/1.1
+
+###
+GET http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/
+
+
+
+###
+
+POST http://localhost:3000/api/users/5ce1b529d20f444cb8eb1061/follow HTTP/1.1
+content-type: application/json
+
+{
+  "userId":"5ce1b76ce7d23839ec53cfed",
+  "userName":"test1"
+}
+###
+
+DELETE http://localhost:3000/api/users/5ce1b529d20f444cb8eb1061/follow HTTP/1.1
 content-type: application/json
 
 {
@@ -90,8 +111,6 @@ content-type: application/json
   "userName":"test1"
 }
 
-###
-GET http://localhost:3000/api/tweets/5ce1b76ce7d23839ec53cfed/stats HTTP/1.1
 
 ###
-GET http://localhost:3000/api/tweets/5ce1ceae65940e3bb8b9c072/
+GET http://localhost:3000/api/users/5ce1b76ce7d23839ec53cfed
