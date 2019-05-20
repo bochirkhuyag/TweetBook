@@ -3,6 +3,7 @@ import {CoreService} from "../core.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Tweet} from "../../models/post";
 import {Message, MessageService} from "primeng/api";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-wall',
@@ -10,6 +11,8 @@ import {Message, MessageService} from "primeng/api";
   styleUrls: ['./wall.component.css']
 })
 export class WallComponent implements OnInit {
+
+  private postsSubscription: Subscription;
 
   posts: any[];
   postCreateForm: FormGroup;
@@ -53,17 +56,19 @@ export class WallComponent implements OnInit {
   }
 
   getWallPosts () {
-    this.coreService.getPostsService()
+    this.postsSubscription = this.coreService.getPostsService()
       .subscribe(posts => {
 
         this.posts = posts;
         console.log(this.posts);
 
       });
+
+    return this.postsSubscription;
   }
 
   ngOnDestroy() {
-
+    this.postsSubscription.unsubscribe();
   }
 
 }

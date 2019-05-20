@@ -9,14 +9,14 @@ var usersRouter = require('./routes/users');
 const cors = require('cors');
 
 // connect to mongoose
-mongoose.connect(MONGO_CONN_STRING,{useNewUrlParser:true});
+mongoose.connect('mongodb+srv://huygaa:pass@cluster0-efgxs.mongodb.net/TweetBook?retryWrites=true',{useNewUrlParser:true});
 var db = mongoose.connection;
 var Tweet = require('./models/tweet');
 
 //check DB connection
 db.once('open', function(){
     console.log("Connected to mongoDB");
-})
+});
 
 db.on('error', (err) =>{
     console.log("DB Error" + err);

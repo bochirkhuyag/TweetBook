@@ -19,7 +19,16 @@ router.get('/:id',(req,res)=>{
     Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).exec((err,tweet)=>{
         res.json(tweet);
     })
-})
+});
+
+//select tweets by user
+router.get('/self/:userId', function (req, res) {
+   Tweet.find({createdUser: {_id: req.params.id}}).sort({'createdDate':-1}).exec((err, tweets) => {
+        if(tweets.length>0) res.json(tweets);
+        else res.json({success:false});
+    })
+});
+
 //select by user
 router.get('/user/:userId', function(req, res) {
     const objId = new mongoose.Types.ObjectId(req.params.id);

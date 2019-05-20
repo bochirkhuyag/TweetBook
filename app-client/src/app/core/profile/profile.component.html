@@ -12,6 +12,22 @@
         </ul>
       </div>
 
+      <div id="todo-form" class="row" style="padding:15px;">
+        <div class="col-xs-8 col-sm-offset-2 text-center" style="margin-bottom: 20px;">
+          <form [formGroup]="postCreateForm" (ngSubmit)="onSubmit(postCreateForm.value)">
+            <div class="form-group">
+              <div class="input-group">
+							<textarea formControlName="content"  rows="4" cols="500" class="form-control input-lg"
+                        placeholder="What is on your mind?"></textarea>
+                <button type="submit" class="input-group-addon btn btn-add btn-lg textarea-addon"
+                >Post</button>
+              </div>
+            </div>
+            <!--<button type="submit" class="btn btn-add btn-lg" ng-click="addPost()">Post</button>-->
+          </form>
+        </div>
+      </div>
+
       <div class="card-post">
         <div class="row">
           <div class="col-xs-3 col-sm-2 text-center">

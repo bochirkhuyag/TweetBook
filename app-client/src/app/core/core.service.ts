@@ -10,14 +10,22 @@ import {catchError} from "rxjs/operators";
 export class CoreService {
 
   private postsListUrl = '/api/tweets';  // URL to web api
+  private selfPostsListUrl = '/api/tweets/self/';  // URL to web api
 
   constructor(private http: HttpClient) { }
 
   public posts;
+  public selfPosts;
 
   getPostsService(): Observable<any[]> {
     this.posts = this.http.get<any[]>(this.postsListUrl);
     return this.posts;
+  }
+
+  getSelfPostsService(id): Observable<any[]> {
+    console.log("shit");
+    this.posts = this.http.get<any[]>(this.selfPostsListUrl + id);
+    return this.selfPosts;
   }
 
   savePostService(tweet: Tweet): Observable<any> {
