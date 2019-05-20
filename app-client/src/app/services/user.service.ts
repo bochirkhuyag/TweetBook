@@ -17,7 +17,9 @@ export class UserService {
   public posts;
 
   getUser(uid: string): Observable<any[]> {
+
     const client = this.http.get('/api/users/' + uid);
+
     const request = client.pipe(
       map((data: any) =>{
         console.log(data);
