@@ -11,23 +11,28 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
 
   error: string;
+  form = new FormGroup({
+    userName: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required])
+  });
   constructor( private auth: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
   }
 
-  form = new FormGroup({
-    userName: new FormControl("", [Validators.required]),
-    password: new FormControl("", [Validators.required])
-  });
+
 
   login() {
     this.auth.login(this.form).subscribe(
-      () => {
-        this.router.navigate(["/"]);
+      (response) => {
+        if(response.error) {
+          this.error = response.error;
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       err => {
-        console.log("login error");
+        this.error ="server error";
       }
     );
   }

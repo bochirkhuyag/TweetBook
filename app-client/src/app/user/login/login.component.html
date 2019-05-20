@@ -5,7 +5,7 @@
         <div class="form-logo">
             <h1 style="text-align: center">Log in</h1>
         </div>
-        <form name="form" (submit)="login()">
+        <form name="form" (submit)="login()" [formGroup]='form'>
             <input type="text"
                    name="userName"
                    formControlName="userName"

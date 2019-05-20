@@ -3,6 +3,8 @@ var router = express.Router();
 var User = require('../models/user');
 var mongoose = require('mongoose');
 
+var bcrypt = require('bcrypt');
+
 //get users
 router.get('/', function(req, res) {
     User.find({},(err,users)=>{
@@ -45,9 +47,32 @@ router.post('/register',(req,res)=>{
     //console.log(user);
     user.save(err=>{
         if(err) res.send(err);
-        
+
         res.json({success:true});
     });
+});
+//Login
+router.post('/login',(req,res)=>{
+
+    User.findOne({'userName':req.body.userName},(err,user)=>{
+        console.log('login');
+        if(err) {
+            res.send({"error": "User does not exist."});
+        }
+        if(user) {
+           
+            bcrypt.compare(req.body.password, user.password, (err, response)=>{
+                console.log('login err' + response);
+                if(response) {
+                    res.json(user);                    
+                } else {
+                    console.log('login err');
+                    res.send({"error": "Password is incorrect."});
+                }                
+            });
+        }
+
+    })
 });
 
 //update user
