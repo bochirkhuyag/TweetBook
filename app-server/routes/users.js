@@ -51,7 +51,7 @@ router.post('/register',(req,res)=>{
     user.save(err=>{
         if(err) res.send({"error": "User already existed."});
         else {
-            res.json({token:createToken(user)});  
+            res.json({token:createToken(user), user:user});  
         }
         
     });
@@ -68,7 +68,7 @@ router.post('/login',(req,res)=>{
             bcrypt.compare(req.body.password, user.password, (err, response)=>{
                 console.log('login err' + response);
                 if(response) {
-                    res.json({token:createToken(user)});                    
+                    res.json({token:createToken(user), user:user});                    
                 } else {
                     console.log('login err');
                     res.send({"error": "Password is incorrect."});

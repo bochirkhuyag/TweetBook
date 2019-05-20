@@ -57,9 +57,11 @@ export class AuthenticationService{
   private registerOrLogin(user: FormGroup, url: string): Observable<any>{
     const client = this.http.post(url, user.value);
     const request = client.pipe(
-      map((data: TokenResponse) =>{
+      map((data: any) =>{
+        //TokenResponse
         if (data.token) {
           this.setToken(data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
         }
         return data;
       })
