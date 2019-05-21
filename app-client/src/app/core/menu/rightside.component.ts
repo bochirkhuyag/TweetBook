@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 @Component({
   selector: 'app-rightside',
@@ -8,13 +9,13 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class RightSideComponent implements OnInit {
 
-  user: Object;
-  constructor(private authenticationService: AuthenticationService) { }
+  user: Object={};
+  constructor(private authenticationService: AuthenticationService, private cookieService:CookieService) { }
 
   ngOnInit() {
-    this.user = Object.create({id:'5ce2ff4c50e4b95988b9dce1'});
+    const uid = this.cookieService.get('uid');
 
-    this.authenticationService.getUserDetails(this.user['id']).subscribe(
+    this.authenticationService.getUserDetails(uid).subscribe(
       (response) =>{
          this.user = response;
       }

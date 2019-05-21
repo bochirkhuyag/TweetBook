@@ -12,7 +12,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 })
 export class MenuComponent implements OnInit {
 
-  user: Object;
+  user: Object = {};
   stats:any;
 
   constructor(private authenticationService:AuthenticationService, private coreService: CoreService,
