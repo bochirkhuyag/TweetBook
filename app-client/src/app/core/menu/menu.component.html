@@ -30,7 +30,7 @@
     <a href="#" title="Profile">
         <input type="file" #imageinput style="display: none" accept="image/*" (change)="processFile(imageinput)">
 
-      <img src=" {{user.picture ? user.picture : '../../../assets/images/avatar/female.jpg'}}" alt="User name" class="rounded-circle img-user" (click)="imageinput.click()">
+      <img src=" {{user.picture ? user.picture :(user.gender === 'male'? '../../../assets/images/avatar/male.png':'../../../assets/images/avatar/female.jpg')}}" alt="User name" class="rounded-circle img-user" (click)="imageinput.click()">
       <!-- {{selectedFile.src}} -->
       <!-- <div [ngStyle]="{'background-image': 'url(' + selectedFile.src + ')'}"></div> -->
     </a>
