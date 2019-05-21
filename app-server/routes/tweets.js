@@ -6,7 +6,7 @@ var User = require('../models/user')
 
 //get tweets
 router.get('/', function(req, res) {
-    Tweet.find({}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err,tweets)=>{
+    Tweet.find({}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user retweeted').exec((err,tweets)=>{
         if(tweets.length>0 || tweets!=undefined) res.json(tweets);
         else res.json({success:false});
     })
@@ -17,7 +17,7 @@ router.get('/:id',(req,res)=>{
     const objId = new mongoose.Types.ObjectId(req.params.id);
 
     try{
-        Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err,tweet)=>{
+        Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user retweeted').exec((err,tweet)=>{
             res.json(tweet);
         })
     }
@@ -31,7 +31,7 @@ router.get('/:id',(req,res)=>{
 router.get('/self/:userId', function (req, res) {
     const objId = new mongoose.Types.ObjectId(req.params.userId);
 
-    Tweet.find({createdUser: {user: objId}}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err, tweets) => {
+    Tweet.find({createdUser: {user: objId}}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user retweeted').exec((err, tweets) => {
         if(tweets.length>0 || tweets!=undefined) res.json(tweets);
         else res.json({success:false});
     })

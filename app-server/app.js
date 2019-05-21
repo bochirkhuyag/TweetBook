@@ -1,6 +1,5 @@
 var express = require('express');
 var app=express();
-var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 require('dotenv').config()
 
@@ -9,9 +8,12 @@ var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 
 const cors = require('cors');
-
+const connStr = 'mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+'/'+process.env.DB_COLLECTION+'?retryWrites=true';
 // connect to mongoose
-mongoose.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+'/'+process.env.DB_COLLECTION+'?retryWrites=true',{useNewUrlParser:true});
+console.log(process.env.DB_HOST);
+console.log(connStr);
+mongoose.connect(connStr,{useNewUrlParser:true});
+
 var db = mongoose.connection;
 
 //check DB connection
