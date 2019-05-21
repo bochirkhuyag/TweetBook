@@ -3,29 +3,31 @@ GET http://localhost:3000/api/tweets/ HTTP/1.1
 
 ###
 
-GET http://localhost:3000/api/tweets/user/5ce38abc994d499ab881420d HTTP/1.1
+GET http://localhost:3000/api/tweets/user/5ce1b76ce7d23839ec53cfed HTTP/1.1
 
 
 ###
-
-//5ce1b529d20f444cb8eb1061  12
-//5ce1b588e924e8050cef45fc thanh
-//5ce1b76ce7d23839ec53cfed test1
+//5ce461606e921251a00d05fe byambaa
+//5ce4629e7ac87a4458f800cd test
 
 POST http://localhost:3000/api/tweets
 content-type: application/json
 
 {
-  "content":"this is 2nd tweet",
-  "createdUser":{"user":"5ce1b76ce7d23839ec53cfed"},
-  "comments":[{"user":"5ce1b529d20f444cb8eb1061","comment":"that's good","likes":["5ce1b529d20f444cb8eb1061"]},
-    {"user":"5ce1b588e924e8050cef45fc","comment":"yep","likes":["5ce1b588e924e8050cef45fc"]}],
-  "likes":[{"user":"5ce1b588e924e8050cef45fc"},{"user":"5ce1b529d20f444cb8eb1061"}],
-  "retweets":[{"user":"5ce1b588e924e8050cef45fc"},{"user":"5ce1b529d20f444cb8eb1061"}]
+  "content":" test's 7th retweet",
+  "createdUser":{"user":"5ce4629e7ac87a4458f800cd"},
+  "comments":[{"user":"5ce4629e7ac87a4458f800cd","comment":"that's good","likes":["5ce4629e7ac87a4458f800cd"]},
+    {"user":"5ce4629e7ac87a4458f800cd","comment":"yep","likes":["5ce461606e921251a00d05fe"]}],
+  "likes":[{"user":"5ce461606e921251a00d05fe"},{"user":"5ce4629e7ac87a4458f800cd"}],
+  "retweeted":{"tweet":"5ce464471e0aca30ace0f148"}
 }
 
+//test for retweet
 ###
-DELETE http://localhost:3000/api/tweets/5ce38abc994d499ab881420d HTTP/1.1
+GET http://localhost:3000/api/tweets/test/5ce464471e0aca30ace0f148/5ce461606e921251a00d05fe
+
+###
+DELETE http://localhost:3000/api/tweets/5ce430da15650f3eac768b3d HTTP/1.1
 
 ###
 
@@ -94,6 +96,8 @@ GET http://localhost:3000/api/tweets/5ce1b76ce7d23839ec53cfed/stats HTTP/1.1
 GET http://localhost:3000/api/tweets/5ce38e4b1417c94298b1eaa4/
 
 
+//until this
+
 //USER TESTING STARTED FROM HERE >>>>>>>>>>>
 
 ###
@@ -104,7 +108,7 @@ POST http://localhost:3000/api/users/5ce1b76ce7d23839ec53cfed/follow HTTP/1.1
 content-type: application/json
 
 {
-  "user":"5ce1b588e924e8050cef45fc"
+  "user":"5ce1b529d20f444cb8eb1061"
 }
 ###
 
