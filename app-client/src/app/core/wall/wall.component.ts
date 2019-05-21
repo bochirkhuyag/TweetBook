@@ -72,7 +72,7 @@ export class WallComponent implements OnInit {
   }
 
   getWallPosts () {
-    this.postsSubscription = this.coreService.getPostsService()
+    this.postsSubscription = this.coreService.getPostsService(this.userId)
       .subscribe(posts => {
 
         if (posts['success'] === false) {

@@ -83,9 +83,9 @@ router.post('/register',(req,res)=>{
     user.save(err=>{
         if(err) res.send({"error": "User already existed."});
         else {
-            res.json({token:createToken(user), user:user});  
+            res.json({token:createToken(user), user:user});
         }
-        
+
     });
 });
 //Login
@@ -113,7 +113,7 @@ function createToken(user) {
     const SECRET = 'SECRET';
     const payload = {user: user.id};
     const token = jwt.sign(payload, SECRET, {
-        expiresIn: 1440000 // expires in 24 
+        expiresIn: 1440000 // expires in 24
         });
 
     return token;
@@ -178,7 +178,7 @@ router.get('/suggested/:userId', function(req, res) {
                 userIDs.push(new mongoose.Types.ObjectId(result[0].following[i]._id));
             }
         }
-        User.find({'_id':{$nin:userIDs}}).sort({'createdDate':-1}).populate('followers._id following._id').exec((err,result)=>{
+        User.find({'_id':{$nin:userIDs}}).sort({'createdDate':-1}).populate('followers._id following._id').limit(5).exec((err,result)=>{
             res.json(result);
         });
         //console.log(userIDs);

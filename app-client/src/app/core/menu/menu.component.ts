@@ -19,15 +19,17 @@ export class MenuComponent implements OnInit {
     private router: Router, private fileService:FileService, private cookieService:CookieService) { }
 
   ngOnInit() {
-    this.coreService.getStatsService().subscribe(
-      (response) =>{
-         this.stats = response;
-      }
-    );
+
     const uid = this.cookieService.get('uid');
     this.authenticationService.getUserDetails(uid).subscribe(
       (response) =>{
          this.user = response;
+      }
+    );
+
+    this.coreService.getStatsService(uid).subscribe(
+      (response) =>{
+        this.stats = response;
       }
     );
   }

@@ -4,7 +4,6 @@ import {HttpClient} from "@angular/common/http";
 import {Tweet} from "../models/post";
 import {Comment} from "../models/comment";
 import {catchError} from "rxjs/operators";
-import {any} from "codelyzer/util/function";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +12,7 @@ export class CoreService {
 
   private postsListUrl = '/api/tweets';  // URL to web api
   private selfPostsListUrl = '/api/tweets/self/';  // URL to web api
+  private wallPostsListUrl = '/api/tweets/user/';
 
   constructor(private http: HttpClient) { }
 
@@ -20,12 +20,12 @@ export class CoreService {
   public selfPosts;
 
 
-  getStatsService(): Observable<any[]> {
-    return this.http.get<any[]>(this.postsListUrl + '/5ce1b529d20f444cb8eb1061/stats');
+  getStatsService(id): Observable<any[]> {
+    return this.http.get<any[]>(this.postsListUrl + '/' + id + '/stats');
   }
 
-  getPostsService(): Observable<any[]> {
-    this.posts = this.http.get<any[]>(this.postsListUrl);
+  getPostsService(id): Observable<any[]> {
+    this.posts = this.http.get<any[]>(this.wallPostsListUrl + id);
     return this.posts;
   }
 
