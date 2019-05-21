@@ -167,5 +167,24 @@ router.get('/search/:searchString',(req,res)=>{
 });
 
 
+//suggested tweeets by userID
+router.get('/suggested/:userId', function(req, res) {
+    const objId = new mongoose.Types.ObjectId(req.params.userId);
+    const userIDs = [];
+    userIDs.push(objId);
+    User.find({_id:objId},{'following._id':1,_id:0},(err,result)=>{
+        if(result[0].following.length>0 && result[0].following!=null && result[0].following!=undefined){
+            for(let i=0; i<result[0].following.length;i++){
+                userIDs.push(new mongoose.Types.ObjectId(result[0].following[i]._id));
+            }
+        }
+        User.find({'_id':{$nin:userIDs}}).sort({'createdDate':-1}).populate('followers._id following._id').exec((err,result)=>{
+            res.json(result);
+        });
+        //console.log(userIDs);
+    })
+});
+
+
 
 module.exports = router;

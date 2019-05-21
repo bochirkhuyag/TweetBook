@@ -37,6 +37,7 @@ router.get('/self/:userId', function (req, res) {
     })
 });
 
+
 //select tweets by userId
 router.get('/user/:userId', function(req, res) {
     const objId = new mongoose.Types.ObjectId(req.params.userId);
