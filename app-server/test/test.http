@@ -94,8 +94,6 @@ GET http://localhost:3000/api/tweets/5ce1b76ce7d23839ec53cfed/stats HTTP/1.1
 GET http://localhost:3000/api/tweets/5ce38e4b1417c94298b1eaa4/
 
 
-//until this
-
 //USER TESTING STARTED FROM HERE >>>>>>>>>>>
 
 ###
