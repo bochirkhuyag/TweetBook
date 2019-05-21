@@ -17,6 +17,12 @@ export class CoreService {
   public posts;
   public selfPosts;
 
+
+  getStatsService(): Observable<any[]> {
+    console.log("get stats ... ");
+    return this.http.get<any[]>(this.postsListUrl + '/5ce1b529d20f444cb8eb1061/stats');
+  }
+
   getPostsService(): Observable<any[]> {
     this.posts = this.http.get<any[]>(this.postsListUrl);
     return this.posts;

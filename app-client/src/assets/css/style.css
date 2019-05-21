@@ -183,8 +183,8 @@ header .badge {
     box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
     position: fixed;
     width: 240px;
-    top: 0px;
-    padding: 50px 10px 0px 10px;
+    /* top: 0px; */
+    padding: 50px 10px 10px 10px;
     background: #ffffff;
     z-index: 99;
 }

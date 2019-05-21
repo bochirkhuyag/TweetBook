@@ -1,4 +1,6 @@
+
 <header class="text-right">
+
   <form class="text-left search" method="GET">
     <input name="q" type="text" placeholder="Search..">
   </form>
@@ -18,7 +20,9 @@
     <span><a [routerLink]="['']" title="Wall"><span class="hidden-xs hidden-sm">Wall</span> <i class="fa fa-database" aria-hidden="true"></i></a>
     </span>
   </div>
+
 </header>
+
 
 <div>
   <!--Left Sidebar with info Profile -->
@@ -27,8 +31,14 @@
       <img src="../../../assets/images/avatar/female.jpg" alt="User name" class="rounded-circle img-user">
     </a>
     <h2 class="text-center hidden-xs profile-name"><a href="#" title="Profile">{{user.firstName}} {{user.lastName}}</a></h2>
-    <p class="text-center user-description hidden-xs">
-      <i></i>
-    </p>
+    <p class="text-center user-description hidden-xs"><hr/>
+      <p>Tweets
+        <span class="badge badge-success">{{stats.tweets}}</span></p><hr/>
+    <p>Followers
+        <span class="badge badge-info">{{stats.followers}}</span><hr/>
+    <p>Following
+        <span class="badge badge-info">{{stats.following}}</span><hr/>
+    <p>Likes<span class="badge badge-info">{{stats.likes}}</span><hr/>
+
   </div>
 </div>
