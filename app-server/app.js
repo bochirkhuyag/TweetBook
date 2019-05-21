@@ -2,6 +2,7 @@ var express = require('express');
 var app=express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+require('dotenv').config()
 
 var tweetsRouter = require('./routes/tweets');
 var usersRouter = require('./routes/users');
@@ -10,9 +11,8 @@ var authRouter = require('./routes/auth');
 const cors = require('cors');
 
 // connect to mongoose
-mongoose.connect('mongodb+srv://huygaa:pass@cluster0-efgxs.mongodb.net/TweetBook?retryWrites=true',{useNewUrlParser:true});
+mongoose.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+'/'+process.env.DB_COLLECTION+'?retryWrites=true',{useNewUrlParser:true});
 var db = mongoose.connection;
-var Tweet = require('./models/tweet');
 
 //check DB connection
 db.once('open', function(){
