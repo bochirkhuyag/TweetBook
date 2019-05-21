@@ -19,10 +19,6 @@ const storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single('image');
 
-router.get('/:url', function (req, res) {
-    
-  });
-
 router.route("/upload").post(function (req, res, next) {
     upload(req, res, function (err) {
         if (err) {
@@ -31,7 +27,7 @@ router.route("/upload").post(function (req, res, next) {
         }
         console.log('Photo Uploaded' + req.file.path);
 
-        const updatedObj = {$set:{picture:"uploads/" + req.file.filename}};
+        const updatedObj = {$set:{picture:req.file.filename}};
         //req.params.userId
         const objId = new mongoose.Types.ObjectId('5ce2ff4c50e4b95988b9dce1');
         User.findOneAndUpdate({_id:objId},updatedObj,(err,doc)=>{
