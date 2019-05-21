@@ -7,9 +7,10 @@ var userSchema = new mongoose.Schema({
     password:{type:String,required:true},
     picture:{type:String},
     createdDate:{type:Date,default:Date.now()},
-    fistName:{type:String},
+    firstName:{type:String},
     lastName:{type:String},
     bio:{type:String},
+    gender:String,
     followers: [{_id:{type: mongoose.Schema.Types.ObjectId, ref: 'users'}, followedAt:{type:Date,default:Date.now()}}],
     following: [{_id:{type: mongoose.Schema.Types.ObjectId, ref: 'users'}, followedAt:{type:Date,default:Date.now()}}],
     email:{type:String,required:true,unique:true}
