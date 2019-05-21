@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import {Router} from "@angular/router";
 import {CoreService} from "../core.service";
-import { HttpClient } from 'selenium-webdriver/http';
 import { FileService } from 'src/app/services/file.service';
 
 @Component({
@@ -30,8 +29,6 @@ export class MenuComponent implements OnInit {
          this.user = response;
       }
     );
-
-
   }
 
   logout() {
@@ -43,12 +40,13 @@ export class MenuComponent implements OnInit {
 
     const file: File = imageinput.files[0];
     const reader: FileReader = new FileReader();
-    reader.addEventListener('load', (event)=>{
+    reader.addEventListener('load', (event:any)=>{
       this.fileService.uploadFile(file).subscribe(
-        (res)=>{console.log(res)},
+        (res)=>{
+          this.user = Object.assign({}, this.user, {picture:res.filePath});
+        },
         (err)=>{console.log(err)}
       );
-      console.log("process file");
     });
     reader.readAsDataURL(file);
   }
