@@ -29,7 +29,7 @@
   <div class="sidebar-nav">
     <a href="#" title="Profile">
         <input type="file" #imageinput style="display: none" accept="image/*" (change)="processFile(imageinput)">
-        {{user.picture}}
+
       <img src=" {{user.picture ? user.picture : '../../../assets/images/avatar/female.jpg'}}" alt="User name" class="rounded-circle img-user" (click)="imageinput.click()">
 
     </a>
