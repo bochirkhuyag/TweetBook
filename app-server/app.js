@@ -10,8 +10,6 @@ var authRouter = require('./routes/auth');
 const cors = require('cors');
 const connStr = 'mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+'/'+process.env.DB_COLLECTION+'?retryWrites=true';
 // connect to mongoose
-console.log(process.env.DB_HOST);
-console.log(connStr);
 mongoose.connect(connStr,{useNewUrlParser:true});
 
 var db = mongoose.connection;
