@@ -7,7 +7,7 @@ var User = require('../models/user')
 //get tweets
 router.get('/', function(req, res) {
     Tweet.find({}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err,tweets)=>{
-        if(tweets.length>0) res.json(tweets);
+        if(tweets.length>0 || tweets!=undefined) res.json(tweets);
         else res.json({success:false});
     })
 });
@@ -17,7 +17,12 @@ router.get('/:id',(req,res)=>{
     const objId = new mongoose.Types.ObjectId(req.params.id);
 
     Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err,tweet)=>{
-        res.json(tweet);
+        try{
+            res.json(tweet);
+        }
+        catch(err){
+            console.log(err);
+        }
     })
 });
 
@@ -26,30 +31,41 @@ router.get('/self/:userId', function (req, res) {
     const objId = new mongoose.Types.ObjectId(req.params.userId);
 
     Tweet.find({createdUser: {user: objId}}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err, tweets) => {
-        if(tweets.length>0) res.json(tweets);
+        if(tweets.length>0 || tweets!=undefined) res.json(tweets);
         else res.json({success:false});
     })
 });
 
-//select by user
+//select tweets by userId
 router.get('/user/:userId', function(req, res) {
-    const objId = new mongoose.Types.ObjectId(req.params.id);
-    User.find({_id:objId}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user').exec((err,result)=>{
-        res.json(result)
-    });
+    const objId = new mongoose.Types.ObjectId(req.params.userId);
+    const userIDs = [];
+    userIDs.push(req.params.userIDs);
+    User.find({_id:objId},{'following._id':1,_id:0},(err,result)=>{
+        const jsonStr = JSON.stringify(result);
+        console.log(jsonStr.following);
+        res.json(result);
+    })
     /*
-    Tweet.find({'createdUser.userId':{$in:[User.find({_id:objId},{followers:1,_id:0}).toArray()]}},(err,tweets)=>{
-          res.json(tweets);
-        })
+        User.(function (animals) {
+        console.log(animals);
+      });
       */
-
+    /*Tweet.find({'createdUser.user':objId}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user').exec((err,result)=>{
+        res.json(result);
+    });
+    */
 });
 
 router.delete('/:tweetId',(req,res)=>{
     const objId = new mongoose.Types.ObjectId(req.params.tweetId);
     Tweet.findByIdAndDelete({_id:objId},(err,doc)=>{
-        if (err) throw err;
-        res.json({success:true});
+        try{
+            res.json({success:true});
+        }
+        catch(err){
+            console.log(err);
+        }
     })
 })
 
@@ -58,16 +74,24 @@ router.post('/',(req,res)=>{
     //console.log(newObj);
     var tweet = new Tweet(newObj);
     tweet.save(err=>{
-        if(err) throw err;
-        res.json({success:true});
+        try{
+            res.json({success:true});
+        }
+        catch(err){
+            console.log(err);
+        }
     });
 });
 
 router.put('/:tweetId',(req,res)=>{
     const updatedObj = req.body;
     Tweet.findOneAndUpdate({_id:req.params.tweetId},updatedObj,(err,doc)=>{
-        if (err)  throw err;
-        res.json({success:true});
+        try{
+            res.json({success:true});
+        }
+        catch(err){
+            console.log(err);
+        }
     })
 });
 
@@ -77,9 +101,13 @@ router.put('/:tweetId/like',(req,res)=>{
     const userObj = mongoose.Types.ObjectId(req.body.user);
     //console.log(user);
     Tweet.updateOne({_id:req.params.tweetId,'likes.user':{$ne:userObj}},{$push:{likes:{'user':userObj}}},(err,doc)=>{
-        if(err) throw err;
-        res.json({success:true});
-    })
+        try{
+            res.json({success:true});
+        }
+        catch(err){
+            console.log(err);
+        }
+    });
 })
 
 //dislike on tweet post
@@ -88,8 +116,12 @@ router.delete('/:tweetId/like',(req,res)=>{
     const userObj = mongoose.Types.ObjectId(req.body.user);
     //console.log(req.body);
     Tweet.updateOne({_id:req.params.tweetId,'likes.user':{$eq:userObj}},{$pull:{likes:{'user':userObj}}},(err,doc)=>{
-        if(err) throw err;
-        res.json({success:true});
+        try{
+            res.json({success:true});
+        }
+        catch(err){
+            console.log(err);
+        }
     })
 });
 
@@ -97,21 +129,25 @@ router.delete('/:tweetId/like',(req,res)=>{
 router.put('/:tweetId/comment',(req,res)=>{
     const comment = req.body;
     //console.log(comment);
-    try {
-        Tweet.updateOne({_id:req.params.tweetId},{$push:{comments:comment}},(err,doc)=>{
+    Tweet.updateOne({_id:req.params.tweetId},{$push:{comments:comment}},(err,doc)=>{
+        try{
             res.json({success:true});
-        });
-    } catch (e) {
-        console.log(e);
-    }
-
+        }
+        catch(err){
+            console.log(err);
+        }
+    });
 
 //delete comment from post
     router.delete('/:tweetId/comment/:commentId',(req,res)=>{
         console.log(req.params.commentId);
         Tweet.updateOne({_id:req.params.tweetId},{$pull:{comments:{'_id':req.params.commentId}}},(err,doc)=>{
-            if(err) throw err;
-            res.json({success:true});
+            try{
+                res.json({success:true});
+            }
+            catch(err){
+                console.log(err);
+            }
         });
     });
 });
@@ -123,8 +159,12 @@ router.put('/:tweetId/comment/:commentId/like',(req,res)=>{
     const userObj = mongoose.Types.ObjectId(req.body.user);
     //console.log(user);
     Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId},{$addToSet:{'comments.$.likes':userObj}},(err,doc)=>{
-        if(err) throw err;
-        res.json({success:true});
+        try{
+            res.json({success:true});
+        }
+        catch(err){
+            console.log(err);
+        }
     })
 });
 
@@ -133,8 +173,12 @@ router.delete('/:tweetId/comment/:commentId/like',(req,res)=>{
     const userObj = mongoose.Types.ObjectId(req.body.user);
     //console.log(user);
     Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId},{$pull:{'comments.$.likes':userObj}},(err,doc)=>{
-        if(err) throw err;
-        res.json({success:true});
+        try{
+            res.json({success:true});
+        }
+        catch(err){
+            console.log(err);
+        }
     })
 });
 
@@ -174,7 +218,9 @@ router.get('/:userId/stats',(req,res)=>{
             })
         });
 
-    });
+    }).catch((err)=>{
+        console.log(err);
+    })
 });
 
 
