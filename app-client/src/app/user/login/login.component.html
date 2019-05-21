@@ -1,4 +1,4 @@
-<div ng-show="error" class="alert alert-danger">{{error}}</div>
+<!--<div ng-show="error" class="alert alert-danger">{{error}}</div>-->
 
 <div class="center">
     <div class="form-box" style="height: 300px;">
@@ -7,11 +7,11 @@
         </div>
         <form name="form" (submit)="login()" [formGroup]='form'>
             <input type="text"
-                   name="userName"
-                   formControlName="userName"
+                   name="username"
+                   formControlName="username"
                    class="form-control"
-                   placeholder="userName" required>
-            <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+                   placeholder="username" required>
+            <!--<span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>-->
 
             <input type="password"
                    name="password"
@@ -19,7 +19,7 @@
                    class="form-control"
                    placeholder="Password" required>
 
-            <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+            <!--<span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>-->
 
             <input type="submit" class="btn btn-social" value="LOGIN">
         </form>
