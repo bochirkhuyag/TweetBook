@@ -4,9 +4,6 @@ var Tweet = require('../models/tweet');
 var mongoose = require('mongoose');
 var User = require('../models/user')
 
-const verifyToken = require('../middleware/verifyToken')
-
-router.use(verifyToken())
 //get tweets
 router.get('/', function(req, res) {
     Tweet.find({}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err,tweets)=>{
@@ -55,7 +52,7 @@ router.get('/user/:userId', function(req, res) {
         Tweet.find({'createdUser.user':{$in:userIDs}}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user createdUser.user').exec((err,result)=>{
             res.json(result);
         });
-        console.log(userIDs);
+        //console.log(userIDs);
     })
 });
 
@@ -78,6 +75,17 @@ router.post('/',(req,res)=>{
     //console.log(newObj);
     try{
         var tweet = new Tweet(newObj);
+        if(tweet.retweeted!=null && tweet.retweeted!=undefined && tweet.retweeted !='{}')
+        {
+            const userId = mongoose.Types.ObjectId(tweet.createdUser.user);
+            const tweetId = mongoose.Types.ObjectId(tweet.retweeted.tweet);
+
+            Tweet.updateOne({_id:tweetId},{$addToSet:{'retweets':userId}},(err,result)=>{
+                //console.log(userId," added to retweets of this ",tweetId," tweet!");
+                //console.log('result : ',result);
+                //console.log('changed!!!');
+            });
+        }
         tweet.save(err=>{
             res.json({success:true});
         });
@@ -149,7 +157,7 @@ router.put('/:tweetId/comment',(req,res)=>{
 
 //delete comment from post
 router.delete('/:tweetId/comment/:commentId',(req,res)=>{
-    console.log(req.params.commentId);
+    //console.log(req.params.commentId);
     try{
         Tweet.updateOne({_id:req.params.tweetId},{$pull:{comments:{'_id':req.params.commentId}}},(err,doc)=>{
             res.json({success:true});
@@ -234,6 +242,8 @@ router.get('/:userId/stats',(req,res)=>{
         console.log(err);
     })
 });
+
+
 
 
 module.exports = router;
