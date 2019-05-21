@@ -5,7 +5,7 @@ const verifyToken = function(){
                 const authorizationHeader = req.headers['authorization'];
                 if( authorizationHeader !== undefined || turnoffForDevelopment){
                     //get token                    
-                    req.token = authorizationHeader.split(' ')[1];
+                    //req.token = authorizationHeader.split(' ')[1];
                     next();
                 } else {
                     res.sendStatus(403);
