@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Tweet} from "../models/post";
 import {Comment} from "../models/comment";
 import {catchError} from "rxjs/operators";
+import {any} from "codelyzer/util/function";
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +40,12 @@ export class CoreService {
   }
 
   addCommentService(id, comment: Comment) : Observable<any> {
-    console.log(id);
     return this.http.put(this.postsListUrl + "/" + id + "/comment", comment)
+      .pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+  }
+
+  likePostService(id, userId) : Observable<any> {
+    return this.http.put(this.postsListUrl + "/" + id + "/like", {'user': userId})
       .pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
   }
 }

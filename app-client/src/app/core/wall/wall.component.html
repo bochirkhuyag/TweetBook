@@ -34,7 +34,7 @@
             <!--<div class="col-sm-8 col-sm-offset-1 data-post">-->
             <p>{{post.content}}</p>
             <div class="reaction">
-              <span style="cursor: pointer" class="like-icon"><i class="fas fa-thumbs-up"></i></span> {{post.likes.length}}
+              <span (click)="likePost(post._id)" style="cursor: pointer" class="like-icon"><i class="fas fa-thumbs-up"></i></span> {{post.likes.length}}
               <!--<span style="cursor: pointer" class="dislike-icon" data-ng-click="dislikePost(post)"><i class="fas fa-thumbs-down"></i></span> {{post.dislikesCount}}-->
             </div>
             <div class="comments">
