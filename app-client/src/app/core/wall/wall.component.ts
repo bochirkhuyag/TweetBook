@@ -87,7 +87,6 @@ export class WallComponent implements OnInit {
   }
 
   addComment(id) {
-    console.log(id);
     if (this.commentForm.valid) {
 
       const comment = new Comment();
@@ -96,8 +95,6 @@ export class WallComponent implements OnInit {
       comment.comment = this.commentForm.controls['comment'].value;
       comment.user = this.userId;
 
-      console.log(id);
-      console.log(comment);
       // console.log(individual);
       this.coreService.addCommentService(id, comment).subscribe(
         data => console.log(data),
@@ -113,6 +110,21 @@ export class WallComponent implements OnInit {
         }
       );
     }
+  }
+
+  likePost(id) {
+    this.coreService.likePostService(id, this.userId).subscribe(
+      data => console.log(data),
+      error => {
+        console.log('error');
+        // this.msgs.push({severity: 'error', summary: error});
+      },
+      () => {
+        this.getWallPosts();
+        this.msgs = [];
+        this.messageService.add({severity:'success', summary:'', detail:'Like success!'});
+      }
+    );
   }
 
 
