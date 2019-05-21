@@ -24,7 +24,9 @@
         <div class="row">
           <div class="col-xs-3 col-sm-2 text-center">
             <a href="#" title="Profile">
-              <img src="../../../assets/images/avatar/female.jpg" alt="User name"
+              <img *ngIf="post.createdUser.user.gender ==='female'" src="../../../assets/images/avatar/female.jpg" alt="User name"
+                   class="rounded-circle img-user">
+              <img *ngIf="post.createdUser.user.gender ==='male'" src="../../../assets/images/avatar/male.png" alt="User name"
                    class="rounded-circle img-user">
             </a>
             <h3 style="margin-top:10px;"><a href="#" title="Profile">{{post.createdUser.user.userName}}</a></h3>
@@ -62,7 +64,7 @@
     <img src="./images/load.gif" alt="loader">
   </div>
 
-  <p-toast></p-toast>
+  <p-toast position="bottom-left"></p-toast>
 
 </div>
 

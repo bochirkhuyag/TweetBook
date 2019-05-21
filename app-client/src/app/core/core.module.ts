@@ -15,6 +15,9 @@ import { RightSideComponent } from './menu/rightside.component';
     CommonModule,
     CoreRoutingModule,
     SharedModule
+  ],
+  providers: [
+    WallComponent
   ]
 })
 export class CoreModule { }
