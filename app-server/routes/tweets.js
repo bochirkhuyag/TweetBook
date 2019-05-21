@@ -23,7 +23,9 @@ router.get('/:id',(req,res)=>{
 
 //select tweets by user
 router.get('/self/:userId', function (req, res) {
-    Tweet.find({createdUser: {_id: req.params.id}}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err, tweets) => {
+    const objId = new mongoose.Types.ObjectId(req.params.userId);
+
+    Tweet.find({createdUser: {user: objId}}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err, tweets) => {
         if(tweets.length>0) res.json(tweets);
         else res.json({success:false});
     })
