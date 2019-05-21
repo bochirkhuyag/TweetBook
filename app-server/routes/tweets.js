@@ -6,7 +6,7 @@ var User = require('../models/user')
 
 //get tweets
 router.get('/', function(req, res) {
-    Tweet.find({}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user').exec((err,tweets)=>{
+    Tweet.find({}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err,tweets)=>{
         if(tweets.length>0) res.json(tweets);
         else res.json({success:false});
     })
@@ -16,14 +16,14 @@ router.get('/', function(req, res) {
 router.get('/:id',(req,res)=>{
     const objId = new mongoose.Types.ObjectId(req.params.id);
 
-    Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user').exec((err,tweet)=>{
+    Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err,tweet)=>{
         res.json(tweet);
     })
 });
 
 //select tweets by user
 router.get('/self/:userId', function (req, res) {
-   Tweet.find({createdUser: {_id: req.params.id}}).sort({'createdDate':-1}).exec((err, tweets) => {
+    Tweet.find({createdUser: {_id: req.params.id}}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user').exec((err, tweets) => {
         if(tweets.length>0) res.json(tweets);
         else res.json({success:false});
     })
@@ -110,13 +110,13 @@ router.put('/:tweetId/comment',(req,res)=>{
     });
 });
 
-//working until this
+
 //like inside post comments
 
 router.put('/:tweetId/comment/:commentId/like',(req,res)=>{
     const userObj = mongoose.Types.ObjectId(req.body.user);
     //console.log(user);
-    Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId,'comments.likes.user':{$ne:userObj}},{$push:{'comments.$.likes':{'user':userObj}}},(err,doc)=>{
+    Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId},{$addToSet:{'comments.$.likes':userObj}},(err,doc)=>{
         if(err) throw err;
         res.json({success:true});
     })
@@ -124,14 +124,13 @@ router.put('/:tweetId/comment/:commentId/like',(req,res)=>{
 
 //dislike inside post comments
 router.delete('/:tweetId/comment/:commentId/like',(req,res)=>{
-    const user = req.body;
-    console.log(user);
-    Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId,'comments.likes.userId':{$eq:user.userId}},{$pull:{'comments.$.likes':{'userName':user.userName,'userId':user.userId}}},(err,doc)=>{
+    const userObj = mongoose.Types.ObjectId(req.body.user);
+    //console.log(user);
+    Tweet.updateOne({'_id':req.params.tweetId,'comments._id':req.params.commentId},{$pull:{'comments.$.likes':userObj}},(err,doc)=>{
         if(err) throw err;
         res.json({success:true});
     })
 });
-
 
 //stat
 
@@ -142,21 +141,21 @@ router.get('/:userId/stats',(req,res)=>{
         "followers":0,
         "following":0
     };
-    const id = req.params.userId;
-    Tweet.find({ 'createdUser._id':id }).countDocuments().exec().then((doc)=>{
+    const ObjId = mongoose.Types.ObjectId(req.params.userId);
+    Tweet.find({ 'createdUser.user':ObjId }).countDocuments().exec().then((doc)=>{
         stat.tweets=doc;
         //total likes for all posts
         Tweet.aggregate([
-            {$match:{'createdUser._id':mongoose.Types.ObjectId(id)}},
+            {$match:{'createdUser.user':ObjId}},
             {$unwind:{path:'$likes'}},
-            {$group:{_id:{'likes':'$likes._id'},count:{$sum:1}}},
+            {$group:{_id:{'likes':'$likes.user'},count:{$sum:1}}},
             {$group:{_id:null,'total':{$sum:'$count'}}},
             {$project:{_id:0,total:1}}
         ],(err,result)=>{
             if (err) throw err;
             if(result.length !=0) stat.likes = result[0].total;
             User.aggregate([
-                {$match:{_id:mongoose.Types.ObjectId(id)}},
+                {$match:{_id:ObjId}},
                 {$project:{_id:0,followers:{$cond: {if: {$isArray:'$followers'}, then: {$size: '$followers'},else: 0}}, following:{$cond: {if: {$isArray:'$following'}, then: {$size: '$following'},else: 0}}}}
             ],(err,result)=>{
                 if(err) throw err;

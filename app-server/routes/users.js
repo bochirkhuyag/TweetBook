@@ -41,14 +41,15 @@ router.route("/upload").post(function (req, res, next) {
 
 //get users
 router.get('/', function(req, res) {
-    User.find({},(err,users)=>{
+    User.find({},{password:0}).populate('followers._id following._id').exec((err,users)=>{
         res.json(users);
     })
 });
+
 //select one user by id
 router.get('/:id',(req,res)=>{
     const objId = new mongoose.Types.ObjectId(req.params.id);
-    User.findOne({'_id':objId},(err,user)=>{
+    User.findOne({'_id':objId},{password:0}).populate('followers._id following._id').exec((err,user)=>{
         res.json(user);
     })
 })
@@ -68,7 +69,7 @@ router.post('/',(req,res)=>{
     var user = new User(newObj);
     //console.log(user);
     user.save(err=>{
-        if(err) res.send(err);
+        if(err) throw err;
         res.json({success:true});
     });
 });
@@ -94,14 +95,14 @@ router.post('/login',(req,res)=>{
         if(err) {
             res.send({"error": "User does not exist."});
         }
-        if(user) {           
+        if(user) {
             bcrypt.compare(req.body.password, user.password, (err, response)=>{
                 if(response) {
-                    res.json({token:createToken(user), user:user});                    
+                    res.json({token:createToken(user), user:user});
                 } else {
                     console.log('login err');
                     res.send({"error": "Password is incorrect."});
-                }                
+                }
             });
         }
 
@@ -128,14 +129,43 @@ router.put('/:userId',(req,res)=>{
 });
 
 //follow user
-/*
-router.post('/:userId/follow/:userToFollow',(req,res)=>{
-    const user = req.params.userIdToFollow;
-    Tweet.updateOne({_id:req.params.userId,'followers._id':{$ne:user._id}},{$push:{followers:{'_id':user._id,'userName':user.userName}}},(err,doc)=>{
+
+router.post('/:userId/follow/',(req,res)=>{
+    const userIdObj = mongoose.Types.ObjectId(req.body.user);
+
+    User.updateOne({_id:req.params.userId},{$addToSet:{following:{_id:userIdObj}}},(err,doc)=>{
         if(err) throw err;
-        res.json({success:true});
+        User.updateOne({_id:userIdObj},
+            {$addToSet:{followers:{_id:mongoose.Types.ObjectId(req.params.userId)}}},(err,doc)=>{
+                if(err) throw err;
+                res.json({success:true});
+            });
+    });
+});
+
+//unfollow user
+router.delete('/:userId/follow/',(req,res)=>{
+    const userIdObj = mongoose.Types.ObjectId(req.body.user);
+
+    User.updateOne({_id:req.params.userId},{$pull:{following:{user:userIdObj}}},(err,doc)=>{
+        if(err) throw err;
+        User.updateOne({_id:userIdObj},
+            {$pull:{followers:{user:mongoose.Types.ObjectId(req.params.userId)}}},(err,doc)=>{
+                if(err) throw err;
+                res.json({success:true});
+            });
+    });
+});
+
+
+//find by name
+
+router.get('/search/:searchString',(req,res)=>{
+    User.find({userName:{$regex:req.params.searchString}},{password:0}).populate('followers._id following._id').exec((err,users)=>{
+        res.json(users);
     })
-})
-*/
+});
+
+
 
 module.exports = router;
