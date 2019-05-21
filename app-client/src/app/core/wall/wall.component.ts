@@ -21,6 +21,7 @@ export class WallComponent implements OnInit {
   postCreateForm: FormGroup;
   commentForm: FormGroup;
   msgs: Message[] = [];
+  user: any;
 
   constructor(private coreService: CoreService, private messageService: MessageService, private cookieService: CookieService) { }
 
@@ -34,7 +35,7 @@ export class WallComponent implements OnInit {
     });
 
     this.userId = this.cookieService.get('uid');
-
+    this.user = JSON.parse(localStorage.user);
     this.getWallPosts();
 
   }

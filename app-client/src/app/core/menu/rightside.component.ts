@@ -4,6 +4,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 import {UserService} from "../../user/user.service";
 import {Subscription} from "rxjs";
 import {MessageService} from "primeng/api";
+import {WallComponent} from "../wall/wall.component";
 
 @Component({
   selector: 'app-rightside',
@@ -18,7 +19,7 @@ export class RightSideComponent implements OnInit {
   users: any [] ;
   userId: string;
 
-  constructor(private authenticationService: AuthenticationService, private cookieService:CookieService, private userService: UserService, private messageService: MessageService) { }
+  constructor(private authenticationService: AuthenticationService, private cookieService:CookieService, private userService: UserService, private messageService: MessageService, private wallComponent: WallComponent) { }
 
   ngOnInit() {
     const uid = this.cookieService.get('uid');
@@ -55,7 +56,8 @@ export class RightSideComponent implements OnInit {
       },
       () => {
         this.getSuggestedUsers();
-        this.messageService.add({severity:'success', summary:'', detail:'Comment success!'});
+        this.wallComponent.getWallPosts();
+        this.messageService.add({severity:'success', summary:'', detail:'Follow success!'});
       }
     );
   }

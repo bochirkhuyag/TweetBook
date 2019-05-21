@@ -35,14 +35,12 @@
       <!-- <div [ngStyle]="{'background-image': 'url(' + selectedFile.src + ')'}"></div> -->
     </a>
     <h2 class="text-center hidden-xs profile-name"><a href="#" title="Profile">{{user.firstName}} {{user.lastName}}</a></h2>
-    <!-- <p class="text-center user-description hidden-xs"><hr/>
-      <p>Tweets
-        <span class="badge badge-success">{{stats.tweets}}</span></p><hr/>
-    <p>Followers
-        <span class="badge badge-info">{{stats.followers}}</span><hr/>
-    <p>Following
-        <span class="badge badge-info">{{stats.following}}</span><hr/>
-    <p>Likes<span class="badge badge-info">{{stats.likes}}</span><hr/> -->
-
+    <br/>
+    <ul class="user-stats">
+      <li><h4>Following</h4><span>{{stats.following}}</span></li>
+      <li><h4>Followers</h4><span>{{stats.followers}}</span></li>
+      <li><h4>Tweets</h4><span>{{stats.tweets}}</span></li>
+      <li><h4>Likes</h4><span>{{stats.likes}}</span></li>
+    </ul>
   </div>
 </div>

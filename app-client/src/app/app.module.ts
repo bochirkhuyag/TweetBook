@@ -10,6 +10,7 @@ import {SharedModule} from "./shared/shared.module";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {AuthTokenInterceptor} from "./services/auth-token.interceptor";
 import { CookieService } from "angular2-cookie/services/cookies.service";
+import {MessageService} from "primeng/api";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { CookieService } from "angular2-cookie/services/cookies.service";
     provide: HTTP_INTERCEPTORS,
     useClass: AuthTokenInterceptor,
     multi: true
-  }, CookieService],
+  }, CookieService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
