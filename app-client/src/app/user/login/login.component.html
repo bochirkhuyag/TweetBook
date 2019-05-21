@@ -7,11 +7,11 @@
         </div>
         <form name="form" (submit)="login()" [formGroup]='form'>
             <input type="text"
-                   name="username"
-                   formControlName="username"
+                   name="userName"
+                   formControlName="userName"
                    class="form-control"
-                   placeholder="username" required>
-            <!--<span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>-->
+                   placeholder="userName" required>
+            <!--<span ng-show="form.userName.$dirty && form.userName.$error.required" class="help-block">userName is required</span>-->
 
             <input type="password"
                    name="password"

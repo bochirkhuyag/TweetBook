@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   error: string;
   form = new FormGroup({
-    username: new FormControl('', [Validators.required]),
+    userName: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
   });
   constructor( private auth: AuthenticationService, private router: Router) { }
