@@ -41,11 +41,11 @@ export class AuthenticationService{
   }
 
   public register(user: FormGroup): Observable<any>{
-    return this.registerOrLogin(user, '/api/users/register');
+    return this.registerOrLogin(user, '/api/auth/register');
   }
 
   public login(user: FormGroup): Observable<any>{
-    return this.registerOrLogin(user, '/api/users/login');
+    return this.registerOrLogin(user, '/api/auth/login');
   }
 
   private registerOrLogin(user: FormGroup, url: string): Observable<any>{

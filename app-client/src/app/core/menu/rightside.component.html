@@ -6,7 +6,7 @@
             <a href="#" title="Profile">
               <!--<img data-ng-if="user.gender === 'male'" src="../../../assets/images/avatar/female.jpg" alt="User name"-->
                    <!--class="rounded-circle img-user">-->
-              <img data-ng-if="item.gender === 'female'" src="../../../assets/images/avatar/female.jpg" alt="User name"
+              <img src="{{item.picture ? item.picture : '../../../assets/images/avatar/female.jpg'}}" alt="User name"
                    class="rounded-circle img-user">
             </a>
           </div>

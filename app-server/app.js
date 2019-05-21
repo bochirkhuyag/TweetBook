@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 
 var tweetsRouter = require('./routes/tweets');
 var usersRouter = require('./routes/users');
+var authRouter = require('./routes/auth');
 
 const cors = require('cors');
 
@@ -27,11 +28,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('upload'))
 
-app.get('/',(req,res)=>{
+app.get('/', (req,res)=>{
     res.send('Please use /api/tweets or /api/users');
 });
 app.use('/api/users',usersRouter);
 app.use('/api/tweets',tweetsRouter);
-
+app.use('/api/auth',authRouter);
 
 app.listen(3000,()=>{console.log('running on port 3000')});

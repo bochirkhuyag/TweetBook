@@ -7,6 +7,9 @@ var bcrypt = require('bcrypt');
 
 const jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const multer = require('multer');
+var cookieParser = require('cookie-parser');
+
+const verifyToken = require('../middleware/verifyToken');
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -19,6 +22,9 @@ const storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single('image');
 
+router.use(verifyToken());
+router.use(cookieParser());
+
 router.route("/upload").post(function (req, res, next) {
     upload(req, res, function (err) {
         if (err) {
@@ -29,7 +35,8 @@ router.route("/upload").post(function (req, res, next) {
         const filePath = "/photo/" + req.file.filename;
         const updatedObj = {$set:{picture:filePath}};
         //req.params.userId
-        const objId = new mongoose.Types.ObjectId('5ce2ff4c50e4b95988b9dce1');
+        console.log("req.cookies.uid " + req.cookies.uid);
+        const objId = new mongoose.Types.ObjectId(req.cookies.uid);
         User.findOneAndUpdate({_id:objId},updatedObj,(err,doc)=>{
             if (err)  res.json({error:err});
             res.json({success:true, filePath:filePath});
