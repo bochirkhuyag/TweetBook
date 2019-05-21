@@ -27,8 +27,8 @@
               <img src="../../../assets/images/avatar/female.jpg" alt="User name"
                    class="rounded-circle img-user">
             </a>
-            <h3 style="margin-top:10px;"><a href="#" title="Profile">{{post.createdUser.userName}}</a></h3>
-            <p><i>2h ago</i></p>
+            <h3 style="margin-top:10px;"><a href="#" title="Profile">{{post.createdUser.user.userName}}</a></h3>
+            <p><i>{{post.createdDate | timeAgo}}</i></p>
           </div>
           <div class="col-sm-9 col-sm-offset-1 data-post">
             <!--<div class="col-sm-8 col-sm-offset-1 data-post">-->
@@ -41,11 +41,11 @@
               <!--<div class="more-comments">View more comments</div>-->
               <ul>
                 <li *ngFor="let comment of post.comments">
-                  <b>{{comment.userName}}: </b> {{comment.comment}}
+                  <b>{{comment.user.userName}}: </b> {{comment.comment}}
                 </li>
               </ul>
-              <form>
-                <input type="text" class="form-control" placeholder="Add a comment">
+              <form [formGroup]="commentForm">
+                <input formControlName="comment" type="text" class="form-control" placeholder="Add a comment" (keyup.enter)="addComment(post._id)">
               </form>
             </div>
           </div>

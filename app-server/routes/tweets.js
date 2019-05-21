@@ -97,10 +97,14 @@ router.delete('/:tweetId/like',(req,res)=>{
 router.put('/:tweetId/comment',(req,res)=>{
     const comment = req.body;
     //console.log(comment);
-    Tweet.updateOne({_id:req.params.tweetId},{$push:{comments:comment}},(err,doc)=>{
-        if(err) throw err;
-        res.json({success:true});
-    });
+    try {
+        Tweet.updateOne({_id:req.params.tweetId},{$push:{comments:comment}},(err,doc)=>{
+            res.json({success:true});
+        });
+    } catch (e) {
+        console.log(e);
+    }
+
 
 //delete comment from post
     router.delete('/:tweetId/comment/:commentId',(req,res)=>{

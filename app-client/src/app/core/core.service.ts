@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
+import {Observable, throwError} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Tweet} from "../models/post";
+import {Comment} from "../models/comment";
 import {catchError} from "rxjs/operators";
 
 @Injectable({
@@ -28,13 +29,18 @@ export class CoreService {
   }
 
   getSelfPostsService(id): Observable<any[]> {
-    console.log("shit");
-    this.posts = this.http.get<any[]>(this.selfPostsListUrl + id);
+    this.selfPosts = this.http.get<any[]>(this.selfPostsListUrl + id);
     return this.selfPosts;
   }
 
   savePostService(tweet: Tweet): Observable<any> {
     return this.http.post(this.postsListUrl, tweet)
-      .pipe(catchError((error: any) => Observable.throw(error.json().error || 'Server error')))
+      .pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+  }
+
+  addCommentService(id, comment: Comment) : Observable<any> {
+    console.log(id);
+    return this.http.put(this.postsListUrl + "/" + id + "/comment", comment)
+      .pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
   }
 }

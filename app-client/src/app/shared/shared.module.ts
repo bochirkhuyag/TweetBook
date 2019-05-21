@@ -5,9 +5,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ToastModule} from "primeng/toast";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BrowserModule} from "@angular/platform-browser";
+import {TimeAgoPipe} from "time-ago-pipe";
 
 @NgModule({
-  declarations: [],
+  declarations: [TimeAgoPipe],
   imports: [
     CommonModule,
     FormsModule,
@@ -25,6 +26,7 @@ import {BrowserModule} from "@angular/platform-browser";
     FormsModule,
     ToastModule,
     ReactiveFormsModule,
+    TimeAgoPipe
   ]
 })
 export class SharedModule { }

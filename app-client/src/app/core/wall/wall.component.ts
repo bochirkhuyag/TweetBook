@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {CoreService} from "../core.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Tweet} from "../../models/post";
+import {Comment} from "../../models/comment";
 import {Message, MessageService} from "primeng/api";
 import {Subscription} from "rxjs";
+import {CookieService} from "angular2-cookie/core";
 
 @Component({
   selector: 'app-wall',
@@ -14,17 +16,25 @@ export class WallComponent implements OnInit {
 
   private postsSubscription: Subscription;
 
+  userId: string;
   posts: any[];
   postCreateForm: FormGroup;
+  commentForm: FormGroup;
   msgs: Message[] = [];
 
-  constructor(private coreService: CoreService, private messageService: MessageService) { }
+  constructor(private coreService: CoreService, private messageService: MessageService, private cookieService: CookieService) { }
 
   ngOnInit() {
 
     this.postCreateForm = new FormGroup({
       content: new FormControl('', Validators.required)
     });
+    this.commentForm = new FormGroup({
+      comment: new FormControl('', Validators.required)
+    });
+
+    this.userId = this.cookieService.get('uid');
+
     this.getWallPosts();
 
   }
@@ -34,9 +44,11 @@ export class WallComponent implements OnInit {
 
       const tweet = new Tweet();
 
+      tweet.createdUser = {};
+
       tweet.id = null;
       tweet.content = this.postCreateForm.controls['content'].value;
-      tweet.createdUser = {_id: '5ce1b529d20f444cb8eb1061', userName: '12'};
+      tweet.createdUser.user = this.userId;
 
       // console.log(individual);
       this.coreService.savePostService(tweet).subscribe(
@@ -55,20 +67,53 @@ export class WallComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.postsSubscription.unsubscribe();
+  }
+
   getWallPosts () {
     this.postsSubscription = this.coreService.getPostsService()
       .subscribe(posts => {
 
-        this.posts = posts;
-        console.log(this.posts);
+        if (posts['success'] === false) {
+          this.posts = [];
+        } else {
+          this.posts = posts;
+        }
 
       });
 
     return this.postsSubscription;
   }
 
-  ngOnDestroy() {
-    this.postsSubscription.unsubscribe();
+  addComment(id) {
+    console.log(id);
+    if (this.commentForm.valid) {
+
+      const comment = new Comment();
+
+      comment.id = null;
+      comment.comment = this.commentForm.controls['comment'].value;
+      comment.user = this.userId;
+
+      console.log(id);
+      console.log(comment);
+      // console.log(individual);
+      this.coreService.addCommentService(id, comment).subscribe(
+        data => console.log(data),
+        error => {
+          console.log('error');
+          // this.msgs.push({severity: 'error', summary: error});
+        },
+        () => {
+          this.getWallPosts();
+          this.msgs = [];
+          this.messageService.add({severity:'success', summary:'', detail:'Comment success!'});
+          this.commentForm.reset();
+        }
+      );
+    }
   }
+
 
 }

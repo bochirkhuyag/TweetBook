@@ -15,6 +15,7 @@ export class ProfileComponent implements OnInit {
 
   posts: any[];
   postCreateForm: FormGroup;
+  user: any;
 
   constructor(private coreService: CoreService, private messageService: MessageService) { }
 
@@ -22,18 +23,19 @@ export class ProfileComponent implements OnInit {
     this.postCreateForm = new FormGroup({
       content: new FormControl('', Validators.required)
     });
+
+    this.user = JSON.parse(localStorage.user);
     this.getProfilePosts();
   }
 
   getProfilePosts () {
-    this.postsSubscription = this.coreService.getSelfPostsService('5ce1b529d20f444cb8eb1061')
+    this.postsSubscription = this.coreService.getSelfPostsService(this.user._id)
       .subscribe(posts => {
 
         this.posts = posts;
         console.log(this.posts);
 
       });
-
     return this.postsSubscription;
   }
 
