@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 
 // export interface UserDetails{
@@ -22,7 +23,7 @@ interface TokenResponse {
 })
 export class AuthenticationService{
 
-  constructor(private http: HttpClient, private router: Router){}
+  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService){}
   setToken(token: string){
     localStorage.setItem('token', token);
   }
@@ -54,6 +55,7 @@ export class AuthenticationService{
         //TokenResponse
         if (data.token) {
           this.setToken(data.token);
+          this.cookieService.put('uid', data.user._id);
           localStorage.setItem('user', JSON.stringify(data.user));
         }
         return data;

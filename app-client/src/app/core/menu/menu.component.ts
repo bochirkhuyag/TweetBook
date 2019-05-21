@@ -3,6 +3,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import {Router} from "@angular/router";
 import {CoreService} from "../core.service";
 import { FileService } from 'src/app/services/file.service';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 @Component({
   selector: 'app-menu',
@@ -15,16 +16,16 @@ export class MenuComponent implements OnInit {
   stats:any;
 
   constructor(private authenticationService:AuthenticationService, private coreService: CoreService,
-    private router: Router, private fileService:FileService) { }
+    private router: Router, private fileService:FileService, private cookieService:CookieService) { }
 
   ngOnInit() {
-    this.user = Object.create({id:'5ce2ff4c50e4b95988b9dce1'});
     this.coreService.getStatsService().subscribe(
       (response) =>{
          this.stats = response;
       }
     );
-    this.authenticationService.getUserDetails(this.user['id']).subscribe(
+    const uid = this.cookieService.get('uid');
+    this.authenticationService.getUserDetails(uid).subscribe(
       (response) =>{
          this.user = response;
       }
@@ -42,7 +43,7 @@ export class MenuComponent implements OnInit {
     const reader: FileReader = new FileReader();
     reader.addEventListener('load', (event:any)=>{
       this.fileService.uploadFile(file).subscribe(
-        (res)=>{
+        (res:any)=>{
           this.user = Object.assign({}, this.user, {picture:res.filePath});
         },
         (err)=>{console.log(err)}

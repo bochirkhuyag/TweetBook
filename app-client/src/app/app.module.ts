@@ -9,6 +9,7 @@ import {CoreModule} from "./core/core.module";
 import {SharedModule} from "./shared/shared.module";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {AuthTokenInterceptor} from "./services/auth-token.interceptor";
+import { CookieService } from "angular2-cookie/services/cookies.service";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import {AuthTokenInterceptor} from "./services/auth-token.interceptor";
     provide: HTTP_INTERCEPTORS,
     useClass: AuthTokenInterceptor,
     multi: true
-  }],
+  }, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
