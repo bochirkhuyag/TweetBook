@@ -35,15 +35,8 @@ export class AuthenticationService{
   }
 
   getUserDetails(uid: string): Observable<any[]> {
-    const client = this.http.get('/api/users/' + uid);
-
-    const request = client.pipe(
-      map((data: any) =>{
-        console.log(data);
-        return data;
-      })
-    );
-    return request;
+    const client = this.http.get<any[]>('/api/users/' + uid);
+    return client;
   }
 
   public register(user: FormGroup): Observable<any>{

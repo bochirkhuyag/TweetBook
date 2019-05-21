@@ -28,17 +28,20 @@
   <!--Left Sidebar with info Profile -->
   <div class="sidebar-nav">
     <a href="#" title="Profile">
-      <img src="../../../assets/images/avatar/female.jpg" alt="User name" class="rounded-circle img-user">
+        <input type="file" #imageinput style="display: none" accept="image/*" (change)="processFile(imageinput)">
+        {{user.picture}}
+      <img src=" {{user.picture ? user.picture : '../../../assets/images/avatar/female.jpg'}}" alt="User name" class="rounded-circle img-user" (click)="imageinput.click()">
+
     </a>
     <h2 class="text-center hidden-xs profile-name"><a href="#" title="Profile">{{user.firstName}} {{user.lastName}}</a></h2>
-    <p class="text-center user-description hidden-xs"><hr/>
+    <!-- <p class="text-center user-description hidden-xs"><hr/>
       <p>Tweets
         <span class="badge badge-success">{{stats.tweets}}</span></p><hr/>
     <p>Followers
         <span class="badge badge-info">{{stats.followers}}</span><hr/>
     <p>Following
         <span class="badge badge-info">{{stats.following}}</span><hr/>
-    <p>Likes<span class="badge badge-info">{{stats.likes}}</span><hr/>
+    <p>Likes<span class="badge badge-info">{{stats.likes}}</span><hr/> -->
 
   </div>
 </div>

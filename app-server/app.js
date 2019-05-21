@@ -25,6 +25,7 @@ db.on('error', (err) =>{
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static('uploads'))
 
 app.get('/',(req,res)=>{
     res.send('Please use /api/tweets or /api/users');

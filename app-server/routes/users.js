@@ -6,7 +6,42 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
 const jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, './uploads');
+    },
+    filename: function (req, file, callback) {
+        callback(null, Date.now() + '-' + file.originalname)
+    }
+});
+
+var upload = multer({ storage: storage }).single('image');
+
+router.get('/:url', function (req, res) {
+    
+  });
+
+router.route("/upload").post(function (req, res, next) {
+    upload(req, res, function (err) {
+        if (err) {
+            console.log('Error Occured' + err);
+            return;
+        }
+        console.log('Photo Uploaded' + req.file.path);
+
+        const updatedObj = {$set:{picture:"uploads/" + req.file.filename}};
+        //req.params.userId
+        const objId = new mongoose.Types.ObjectId('5ce2ff4c50e4b95988b9dce1');
+        User.findOneAndUpdate({_id:objId},updatedObj,(err,doc)=>{
+            if (err)  res.json({error:err});
+            res.json({success:true});
+        })
+        //res.json({success:true});
+    })
+
+});
 
 //get users
 router.get('/', function(req, res) {
