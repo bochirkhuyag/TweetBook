@@ -56,12 +56,12 @@ export class WallComponent implements OnInit {
       tweet.id = null;
       tweet.content = this.postCreateForm.controls['content'].value;
       tweet.createdUser.user = this.userId;
-      tweet.retweeted = {};
 
       if (this.retweet) {
+        tweet.retweeted = {};
         this.retweetId = this.retweet._id;
+        tweet.retweeted.tweet = this.retweetId;
       }
-      tweet.retweeted.tweet = this.retweetId;
       // tweet.photo = this.selectedFile.url;
 
       // console.log(individual);
