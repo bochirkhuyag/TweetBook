@@ -17,7 +17,7 @@ router.get('/:id',(req,res)=>{
     const objId = new mongoose.Types.ObjectId(req.params.id);
 
     try{
-        Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user retweeted').exec((err,tweet)=>{
+        Tweet.findOne({'_id':objId}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user retweeted.tweet').exec((err,tweet)=>{
             res.json(tweet);
         })
     }
@@ -31,7 +31,7 @@ router.get('/:id',(req,res)=>{
 router.get('/self/:userId', function (req, res) {
     const objId = new mongoose.Types.ObjectId(req.params.userId);
 
-    Tweet.find({createdUser: {user: objId}}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user retweeted').exec((err, tweets) => {
+    Tweet.find({createdUser: {user: objId}}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user retweeted.tweet').exec((err, tweets) => {
         if(tweets.length>0 || tweets!=undefined) res.json(tweets);
         else res.json({success:false});
     })
@@ -49,7 +49,7 @@ router.get('/user/:userId', function(req, res) {
                 userIDs.push(new mongoose.Types.ObjectId(result[0].following[i]._id));
             }
         }
-        Tweet.find({'createdUser.user':{$in:userIDs}}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user createdUser.user').exec((err,result)=>{
+        Tweet.find({'createdUser.user':{$in:userIDs}}).sort({'createdDate':-1}).populate('comments.likes.user comments.user likes.user retweets.user createdUser.user retweeted.tweet').exec((err,result)=>{
             res.json(result);
         });
         //console.log(userIDs);
