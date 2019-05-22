@@ -6,6 +6,8 @@ import {Subscription} from "rxjs";
 import {CookieService} from "angular2-cookie/core";
 import {Tweet} from "../../models/post";
 import {Comment} from "../../models/comment";
+import {UserService} from "../../user/user.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -15,14 +17,31 @@ import {Comment} from "../../models/comment";
 export class ProfileComponent implements OnInit {
 
   private postsSubscription: Subscription;
+  private usersSubscription: Subscription;
 
   posts: any[];
   postCreateForm: FormGroup;
   user: any;
-  userId: string;
+  userId: any;
   commentForm: FormGroup;
+  profile: any;
 
-  constructor(private coreService: CoreService, private messageService: MessageService, private cookieService: CookieService, private confirmationService: ConfirmationService) { }
+  users: any[];
+  followers: any[];
+
+  constructor(
+    private coreService: CoreService,
+    private messageService: MessageService,
+    private cookieService: CookieService,
+    private confirmationService: ConfirmationService,
+    private route: ActivatedRoute,
+    private userService: UserService
+  ) {
+    this.route.params.subscribe
+    (
+      params => this.userId = + params['id']
+    );
+  }
 
   ngOnInit() {
     this.postCreateForm = new FormGroup({
@@ -33,12 +52,18 @@ export class ProfileComponent implements OnInit {
       comment: new FormControl('', Validators.required)
     });
 
-    this.userId = this.cookieService.get('uid');
+    this.user = JSON.parse(localStorage.user);
+
+    if (!this.userId) {
+      this.userId = this.cookieService.get('uid');
+    }
     this.getProfilePosts();
+    this.getUserFollowers(this.userId);
   }
 
   ngOnDestroy() {
     this.postsSubscription.unsubscribe();
+    this.usersSubscription.unsubscribe();
   }
 
   getProfilePosts () {
@@ -116,5 +141,12 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  getUserFollowers(id) {
+    this.usersSubscription = this.userService.getUserByIdService(id)
+      .subscribe(user => {
+        this.profile = user;
+      });
 
+    return this.usersSubscription;
+  }
 }

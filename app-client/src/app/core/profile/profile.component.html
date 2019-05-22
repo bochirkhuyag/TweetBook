@@ -63,8 +63,44 @@
     </div>
 
     <!--right sidebar-->
-    <div class="col-lg-4 col-md-6 col-sm-8" >
-      <app-rightside></app-rightside>
+    <div *ngIf="profile" class="col-lg-4 col-md-6 col-sm-8" >
+      <!--<app-rightside></app-rightside>-->
+        <div class="profiles">
+          <h2>Following list</h2>
+          <div class="profile-block" *ngFor="let user of profile.following">
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <a href="#" title="Profile">
+                  <img *ngIf="user.gender === 'male'" src="../../../images/avatars/male.png" alt="User name"
+                       class="rounded-circle img-user">
+                  <img *ngIf="user.gender === 'female'" src="../../../images/avatars/female.jpg" alt="User name"
+                       class="rounded-circle img-user">
+                </a>
+              </div>
+              <div class="col-md-8">
+                <h3 style="margin-top:10px;font-size:12px;margin-bottom:10px;"><a href="#" title="Profile">{{user._id.firstName}} {{user._id.lastName}}</a></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="profiles">
+          <h2>Follower list</h2>
+          <div class="profile-block" *ngFor="let follower of profile.followers">
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <a href="#" title="Profile">
+                  <img *ngIf="user.gender === 'male'" src="../../../images/avatars/male.png" alt="User name"
+                       class="rounded-circle img-user">
+                  <img *ngIf="user.gender === 'female'" src="../../../images/avatars/female.jpg" alt="User name"
+                       class="rounded-circle img-user">
+                </a>
+              </div>
+              <div class="col-md-8">
+                <h3 style="margin-top:10px;font-size:12px;margin-bottom:10px;"><a href="#" title="Profile">{{follower._id.firstName}} {{follower._id.lastName}}</a></h3>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
 

@@ -21,4 +21,8 @@ export class UserService {
     return this.http.post(this.usersUrl + userId + '/follow', {'user': id})
       .pipe(catchError((error: any) => throwError(error.json || 'Server error occured')));
   }
+
+  getUserByIdService(id) : Observable<any[]> {
+    return this.http.get<any[]>(this.usersUrl + id);
+  }
 }

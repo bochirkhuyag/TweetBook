@@ -35,6 +35,7 @@
       <!-- <div [ngStyle]="{'background-image': 'url(' + selectedFile.src + ')'}"></div> -->
     </a>
     <h2 class="text-center hidden-xs profile-name"><a href="#" title="Profile">{{user.firstName}} {{user.lastName}}</a></h2>
+    <h4 style="color:#666;text-align: center">@{{user.userName}}</h4>
     <br/>
     <ul *ngIf="stats" class="user-stats">
       <li><h4>Following</h4><span>{{stats.following}}</span></li>

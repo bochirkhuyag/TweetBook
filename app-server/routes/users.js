@@ -174,7 +174,7 @@ router.get('/search/:searchString',(req,res)=>{
 });
 
 
-//suggested tweeets by userID
+//suggested users by userID
 router.get('/suggested/:userId', function(req, res) {
     const objId = new mongoose.Types.ObjectId(req.params.userId);
     const userIDs = [];
