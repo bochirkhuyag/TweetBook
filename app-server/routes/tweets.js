@@ -4,6 +4,10 @@ var Tweet = require('../models/tweet');
 var mongoose = require('mongoose');
 var User = require('../models/user')
 
+
+const verifyToken = require('../middleware/verifyToken');
+router.use(verifyToken());
+
 //get tweets
 router.get('/', function(req, res) {
     Tweet.find({}).sort({'createdDate':-1}).populate('comments.likes comments.user likes.user retweets.user createdUser.user retweeted').exec((err,tweets)=>{
