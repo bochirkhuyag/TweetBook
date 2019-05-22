@@ -26,6 +26,7 @@ router.use(verifyToken());
 router.use(cookieParser());
 
 router.route("/profile").post(function (req, res, next) {
+    console.log('working');
     upload(req, res, function (err) {
         if (err) {
             console.log('Error Occured' + err);
@@ -52,8 +53,8 @@ router.route("/post").post(function (req, res, next) {
             return;
         }
         console.log('Photo Uploaded' + req.file.path);
-        const filePath = "/photo/" + req.file.filename;       
-        res.json({success:true, filePath:filePath});        
+        const filePath = "/photo/" + req.file.filename;
+        res.json({success:true, filePath:filePath});
     })
 
 });
