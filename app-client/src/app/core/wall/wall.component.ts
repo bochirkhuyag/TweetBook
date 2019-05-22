@@ -6,6 +6,7 @@ import {Comment} from "../../models/comment";
 import {Message, MessageService} from "primeng/api";
 import {Subscription} from "rxjs";
 import {CookieService} from "angular2-cookie/core";
+import { FileService } from 'src/app/services/file.service';
 
 @Component({
   selector: 'app-wall',
@@ -22,8 +23,9 @@ export class WallComponent implements OnInit {
   commentForm: FormGroup;
   msgs: Message[] = [];
   user: any;
+  selectedFile;
 
-  constructor(private coreService: CoreService, private messageService: MessageService, private cookieService: CookieService) { }
+  constructor(private coreService: CoreService, private messageService: MessageService, private fileService:FileService, private cookieService: CookieService) { }
 
   ngOnInit() {
 
@@ -50,6 +52,7 @@ export class WallComponent implements OnInit {
       tweet.id = null;
       tweet.content = this.postCreateForm.controls['content'].value;
       tweet.createdUser.user = this.userId;
+      tweet.photo = this.selectedFile.url;
 
       // console.log(individual);
       this.coreService.savePostService(tweet).subscribe(
@@ -63,6 +66,7 @@ export class WallComponent implements OnInit {
           this.msgs = [];
           this.messageService.add({severity:'success', summary:'', detail:'Post success!'});
           this.postCreateForm.reset();
+          this.selectedFile = Object.assign({}, this.selectedFile, {});
         }
       );
     }
@@ -95,6 +99,7 @@ export class WallComponent implements OnInit {
       comment.id = null;
       comment.comment = this.commentForm.controls['comment'].value;
       comment.user = this.userId;
+      comment.photo = this.selectedFile.url;
 
       // console.log(individual);
       this.coreService.addCommentService(id, comment).subscribe(
@@ -105,12 +110,28 @@ export class WallComponent implements OnInit {
         },
         () => {
           this.getWallPosts();
+          this.selectedFile = Object.assign({}, this.selectedFile, {});
           this.msgs = [];
           this.messageService.add({severity:'success', summary:'', detail:'Comment success!'});
           this.commentForm.reset();
         }
       );
     }
+  }
+
+  processFile(imageinput){
+
+    const file: File = imageinput.files[0];
+    const reader: FileReader = new FileReader();
+    reader.addEventListener('load', (event:any)=>{
+      this.fileService.uploadFilePost(file).subscribe(
+        (res:any)=>{
+          this.selectedFile = Object.assign({}, this.selectedFile, {src: event.target.result, url:res.filePath});
+        },
+        (err)=>{console.log(err)}
+      );
+    });
+    reader.readAsDataURL(file);
   }
 
   likePost(id) {

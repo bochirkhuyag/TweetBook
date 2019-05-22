@@ -7,7 +7,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class FileService {
 
-  private postsListUrl = '/api/users';  // URL to web api
+  private postsListUrl = '/api/upload';  // URL to web api
 
   constructor(private http: HttpClient) { }
 
@@ -15,9 +15,18 @@ export class FileService {
 
     let form = new FormData();
     form.append('image', image);
-    console.log("process file" + this.http);
-    return this.http.post<any>(this.postsListUrl + '/upload', form);
+    return this.http.post<any>(this.postsListUrl + '/profile', form);
 
   }
+//upload photo for tweet, comment
+  uploadFilePost(image:File): Observable<any[]>{
+
+    let form = new FormData();
+    form.append('image', image);
+    console.log("process file" + this.http);
+    return this.http.post<any>(this.postsListUrl + '/post', form);
+
+  }
+
 
 }

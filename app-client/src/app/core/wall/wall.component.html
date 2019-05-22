@@ -9,9 +9,17 @@
           <form [formGroup]="postCreateForm" (ngSubmit)="onSubmit(postCreateForm.value)">
             <div class="form-group">
               <div class="input-group">
-							<textarea formControlName="content"  rows="4" cols="500" class="form-control input-lg"
+							  <textarea formControlName="content"  rows="4" cols="500" class="form-control input-lg"
                         placeholder="What is on your mind?"></textarea>
-                <button type="submit" class="input-group-addon btn btn-add btn-lg textarea-addon"
+                  <div *ngIf="selectedFile" class="img-preview-container">
+                      <div class="img-preview" [ngStyle]="{'background-image':'url(' + selectedFile.src + ')'}">
+
+                      </div>
+                    </div>
+
+                      <span (click)="imageinput.click()">Add Photo</span>
+                      <input formControlName="photo" name="photo" type="file" #imageinput accept="image/*" style="display: none" (change)="processFile(imageinput)">
+                  <button type="submit" class="input-group-addon btn btn-add btn-lg textarea-addon"
                       >Post</button>
               </div>
             </div>
@@ -35,6 +43,7 @@
           <div class="col-sm-9 col-sm-offset-1 data-post">
             <!--<div class="col-sm-8 col-sm-offset-1 data-post">-->
             <p>{{post.content}}</p>
+            <img *ngIf="post.photo" [src]="post.photo" width="50px" height="50px"/>
             <div class="reaction">
               <span (click)="likePost(post._id)" style="cursor: pointer" class="like-icon"><i class="fas fa-thumbs-up"></i></span> {{post.likes.length}}
               <!--<span style="cursor: pointer" class="dislike-icon" data-ng-click="dislikePost(post)"><i class="fas fa-thumbs-down"></i></span> {{post.dislikesCount}}-->
