@@ -11,16 +11,18 @@
               <div class="input-group">
 							  <textarea formControlName="content"  rows="4" cols="500" class="form-control input-lg"
                         placeholder="What is on your mind?"></textarea>
-                  <!--<div *ngIf="selectedFile" class="img-preview-container">-->
-                      <!--<div class="img-preview" [ngStyle]="{'background-image':'url(' + selectedFile.src + ')'}">-->
 
-                      <!--</div>-->
-                    <!--</div>-->
 
-                      <!--<span (click)="imageinput.click()">Add Photo</span>-->
-                      <!--<input formControlName="photo" name="photo" type="file" #imageinput accept="image/*" style="display: none" (change)="processFile(imageinput)">-->
+
+                      <input formControlName="photo" name="photo" type="file" #imageinput accept="image/*" style="display: none" (change)="processFile(imageinput)">
                   <button type="submit" class="input-group-addon btn btn-add btn-lg textarea-addon"
                       >Post</button>
+              </div>
+            </div>
+            <div style="float:left"><span class="btn btn-success" (click)="imageinput.click()">Add Photo</span></div>
+            <div *ngIf="selectedFile" class="img-preview-container">
+              <div class="img-preview" [ngStyle]="{'background-image':'url(' + selectedFile.src + ')'}">
+
               </div>
             </div>
             <!--<button type="submit" class="btn btn-add btn-lg" ng-click="addPost()">Post</button>-->

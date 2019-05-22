@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CoreService} from "../core.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Tweet} from "../../models/post";
@@ -6,7 +6,7 @@ import {Comment} from "../../models/comment";
 import {ConfirmationService, Message, MessageService} from "primeng/api";
 import {Subscription} from "rxjs";
 import {CookieService} from "angular2-cookie/core";
-import { FileService } from 'src/app/services/file.service';
+import {FileService} from 'src/app/services/file.service';
 
 @Component({
   selector: 'app-wall',
@@ -62,7 +62,7 @@ export class WallComponent implements OnInit {
         this.retweetId = this.retweet._id;
         tweet.retweeted.tweet = this.retweetId;
       }
-      // tweet.photo = this.selectedFile.url;
+      tweet.photo = this.selectedFile.url;
 
       // console.log(individual);
       console.log(tweet);
@@ -132,17 +132,17 @@ export class WallComponent implements OnInit {
 
   processFile(imageinput){
 
-    // const file: File = imageinput.files[0];
-    // const reader: FileReader = new FileReader();
-    // reader.addEventListener('load', (event:any)=>{
-    //   this.fileService.uploadFilePost(file).subscribe(
-    //     (res:any)=>{
-    //       this.selectedFile = Object.assign({}, this.selectedFile, {src: event.target.result, url:res.filePath});
-    //     },
-    //     (err)=>{console.log(err)}
-    //   );
-    // });
-    // reader.readAsDataURL(file);
+    const file: File = imageinput.files[0];
+    const reader: FileReader = new FileReader();
+    reader.addEventListener('load', (event:any)=>{
+      this.fileService.uploadFilePost(file).subscribe(
+        (res:any)=>{
+          this.selectedFile = Object.assign({}, this.selectedFile, {src: event.target.result, url:res.filePath});
+        },
+        (err)=>{console.log(err)}
+      );
+    });
+    reader.readAsDataURL(file);
   }
 
   likePost(id) {
