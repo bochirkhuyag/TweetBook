@@ -3,7 +3,7 @@ import {CoreService} from "../core.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Tweet} from "../../models/post";
 import {Comment} from "../../models/comment";
-import {Message, MessageService} from "primeng/api";
+import {ConfirmationService, Message, MessageService} from "primeng/api";
 import {Subscription} from "rxjs";
 import {CookieService} from "angular2-cookie/core";
 import { FileService } from 'src/app/services/file.service';
@@ -24,8 +24,11 @@ export class WallComponent implements OnInit {
   msgs: Message[] = [];
   user: any;
   selectedFile;
+  display: boolean = false;
+  retweet: any;
+  retweetId: string;
 
-  constructor(private coreService: CoreService, private messageService: MessageService, private fileService:FileService, private cookieService: CookieService) { }
+  constructor(private coreService: CoreService, private messageService: MessageService, private fileService:FileService, private cookieService: CookieService, private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
 
@@ -39,6 +42,7 @@ export class WallComponent implements OnInit {
     this.userId = this.cookieService.get('uid');
     this.user = JSON.parse(localStorage.user);
     this.getWallPosts();
+    this.retweetId = "";
 
   }
 
@@ -52,9 +56,15 @@ export class WallComponent implements OnInit {
       tweet.id = null;
       tweet.content = this.postCreateForm.controls['content'].value;
       tweet.createdUser.user = this.userId;
-      tweet.photo = this.selectedFile.url;
+
+      if (this.retweet) {
+        this.retweetId = this.retweet._id;
+      }
+      tweet.retweeted = this.retweetId;
+      // tweet.photo = this.selectedFile.url;
 
       // console.log(individual);
+      console.log(tweet);
       this.coreService.savePostService(tweet).subscribe(
         data => console.log(data),
         error => {
@@ -99,7 +109,7 @@ export class WallComponent implements OnInit {
       comment.id = null;
       comment.comment = this.commentForm.controls['comment'].value;
       comment.user = this.userId;
-      comment.photo = this.selectedFile.url;
+      // comment.photo = this.selectedFile.url;
 
       // console.log(individual);
       this.coreService.addCommentService(id, comment).subscribe(
@@ -121,17 +131,17 @@ export class WallComponent implements OnInit {
 
   processFile(imageinput){
 
-    const file: File = imageinput.files[0];
-    const reader: FileReader = new FileReader();
-    reader.addEventListener('load', (event:any)=>{
-      this.fileService.uploadFilePost(file).subscribe(
-        (res:any)=>{
-          this.selectedFile = Object.assign({}, this.selectedFile, {src: event.target.result, url:res.filePath});
-        },
-        (err)=>{console.log(err)}
-      );
-    });
-    reader.readAsDataURL(file);
+    // const file: File = imageinput.files[0];
+    // const reader: FileReader = new FileReader();
+    // reader.addEventListener('load', (event:any)=>{
+    //   this.fileService.uploadFilePost(file).subscribe(
+    //     (res:any)=>{
+    //       this.selectedFile = Object.assign({}, this.selectedFile, {src: event.target.result, url:res.filePath});
+    //     },
+    //     (err)=>{console.log(err)}
+    //   );
+    // });
+    // reader.readAsDataURL(file);
   }
 
   likePost(id) {
@@ -147,6 +157,34 @@ export class WallComponent implements OnInit {
         this.messageService.add({severity:'success', summary:'', detail:'Like success!'});
       }
     );
+  }
+
+  retweetPost(post) {
+    // this.retweetId = post.id;
+    this.display = true;
+    this.retweet = post;
+  }
+
+  deleteTweet(id) {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this tweet?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.coreService.deleteTweet(id).subscribe(
+          data=> console.log(data),
+          error=> {console.log('error');},
+          ()=> {
+            this.getWallPosts();
+            this.messageService.add({severity:'info', summary:'Confirmed', detail:'Tweet deleted!'});
+          }
+        );
+        // this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
+      },
+      reject: () => {
+        // this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];
+      }
+    });
   }
 
 

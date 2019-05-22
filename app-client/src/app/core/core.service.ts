@@ -13,12 +13,12 @@ export class CoreService {
   private postsListUrl = '/api/tweets';  // URL to web api
   private selfPostsListUrl = '/api/tweets/self/';  // URL to web api
   private wallPostsListUrl = '/api/tweets/user/';
+  private searchUsersUrl = '/api/users/search/';
 
   constructor(private http: HttpClient) { }
 
   public posts;
   public selfPosts;
-
 
   getStatsService(id): Observable<any[]> {
     return this.http.get<any[]>(this.postsListUrl + '/' + id + '/stats');
@@ -47,5 +47,19 @@ export class CoreService {
   likePostService(id, userId) : Observable<any> {
     return this.http.put(this.postsListUrl + "/" + id + "/like", {'user': userId})
       .pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+  }
+
+  deleteTweet(id) : Observable<any> {
+    return this.http.delete(this.postsListUrl + "/" + id)
+      .pipe(catchError((error: any) => throwError( error.json().error || 'Server error')))
+  }
+
+  retweetPostService(tweet: Tweet) : Observable<any> {
+    return this.http.put(this.postsListUrl, tweet)
+      .pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+  }
+
+  searchUserService(query) : Observable<any> {
+    return this.http.get<any[]>(this.searchUsersUrl + query);
   }
 }

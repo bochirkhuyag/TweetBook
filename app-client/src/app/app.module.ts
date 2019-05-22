@@ -11,10 +11,12 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {AuthTokenInterceptor} from "./services/auth-token.interceptor";
 import {CookieService} from "angular2-cookie/services/cookies.service";
 import {MessageService} from "primeng/api";
+import { InitDirective } from './services/init.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    InitDirective
 
   ],
   imports: [

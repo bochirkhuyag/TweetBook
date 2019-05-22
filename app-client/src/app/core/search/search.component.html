@@ -1,0 +1,35 @@
+
+<!--Wall with Post -->
+<div class="content-posts active" id="posts">
+  <div id="posts-container" class="container-fluid container-posts">
+
+    <div class="row">
+      <!--middle container-->
+      <div class="col-md-8">
+
+        <div class="card-post" style="margin-top:16px;">
+          <h2>Search result</h2>
+          <div class="profile-block" *ngFor="let user of results">
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <a href="#" title="Profile">
+                  <img *ngIf="user.gender ==='female'" src="../../../assets/images/avatar/female.jpg" alt="User name"
+                       class="rounded-circle img-user" />
+                  <img *ngIf="user.gender ==='male'" src="../../../assets/images/avatar/male.png" alt="User name"
+                       class="rounded-circle img-user" />
+                </a>
+              </div>
+              <div class="col-md-8">
+                <h3 style="margin-top:10px;font-size:12px;margin-bottom:10px;"><a href="#!/profile/{{user.id}}" title="Profile">{{user.firstname}} {{user.lastname}}</a></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+

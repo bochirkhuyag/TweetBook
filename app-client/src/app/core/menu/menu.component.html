@@ -2,7 +2,7 @@
 <header class="text-right">
 
   <form class="text-left search" method="GET">
-    <input name="q" type="text" placeholder="Search..">
+    <input #query (keyup.enter)="searchUser(query.value)" name="q" type="text" placeholder="Search..">
   </form>
   <div class="menu-icon">
     <div class="dropdown">
@@ -36,7 +36,7 @@
     </a>
     <h2 class="text-center hidden-xs profile-name"><a href="#" title="Profile">{{user.firstName}} {{user.lastName}}</a></h2>
     <br/>
-    <ul class="user-stats">
+    <ul *ngIf="stats" class="user-stats">
       <li><h4>Following</h4><span>{{stats.following}}</span></li>
       <li><h4>Followers</h4><span>{{stats.followers}}</span></li>
       <li><h4>Tweets</h4><span>{{stats.tweets}}</span></li>

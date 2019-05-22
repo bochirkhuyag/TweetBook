@@ -11,14 +11,14 @@
               <div class="input-group">
 							  <textarea formControlName="content"  rows="4" cols="500" class="form-control input-lg"
                         placeholder="What is on your mind?"></textarea>
-                  <div *ngIf="selectedFile" class="img-preview-container">
-                      <div class="img-preview" [ngStyle]="{'background-image':'url(' + selectedFile.src + ')'}">
+                  <!--<div *ngIf="selectedFile" class="img-preview-container">-->
+                      <!--<div class="img-preview" [ngStyle]="{'background-image':'url(' + selectedFile.src + ')'}">-->
 
-                      </div>
-                    </div>
+                      <!--</div>-->
+                    <!--</div>-->
 
-                      <span (click)="imageinput.click()">Add Photo</span>
-                      <input formControlName="photo" name="photo" type="file" #imageinput accept="image/*" style="display: none" (change)="processFile(imageinput)">
+                      <!--<span (click)="imageinput.click()">Add Photo</span>-->
+                      <!--<input formControlName="photo" name="photo" type="file" #imageinput accept="image/*" style="display: none" (change)="processFile(imageinput)">-->
                   <button type="submit" class="input-group-addon btn btn-add btn-lg textarea-addon"
                       >Post</button>
               </div>
@@ -29,30 +29,34 @@
       </div>
 
       <div class="card-post" *ngFor="let post of posts">
+        <span *ngIf="post.createdUser.user._id === userId" (click)="deleteTweet(post._id)" style="float:right;font-size:10px;color:#999"><i class="fas fa-remove"></i></span>
         <div class="row">
           <div class="col-xs-3 col-sm-2 text-center">
             <a href="#" title="Profile">
               <img *ngIf="post.createdUser.user.gender ==='female'" src="../../../assets/images/avatar/female.jpg" alt="User name"
-                   class="rounded-circle img-user">
+                   class="rounded-circle img-user" />
               <img *ngIf="post.createdUser.user.gender ==='male'" src="../../../assets/images/avatar/male.png" alt="User name"
-                   class="rounded-circle img-user">
+                   class="rounded-circle img-user" />
             </a>
-            <h3 style="margin-top:10px;"><a href="#" title="Profile">{{post.createdUser.user.userName}}</a></h3>
-            <p><i>{{post.createdDate | timeAgo}}</i></p>
+            <h3 class="post-username" style="margin-top:10px;"><a href="#" title="Profile">{{post.createdUser.user.userName}}</a></h3>
+            <p class="time-ago">{{post.createdDate | timeAgo}}</p>
           </div>
           <div class="col-sm-9 col-sm-offset-1 data-post">
             <!--<div class="col-sm-8 col-sm-offset-1 data-post">-->
             <p>{{post.content}}</p>
+            <div *ngIf="post.retweeted" class="retweet">
+              <p>{{post.retweeted.tweet.content}}</p>
+            </div>
             <img *ngIf="post.photo" [src]="post.photo" width="50px" height="50px"/>
             <div class="reaction">
               <span (click)="likePost(post._id)" style="cursor: pointer" class="like-icon"><i class="fas fa-thumbs-up"></i></span> {{post.likes.length}}
-              <!--<span style="cursor: pointer" class="dislike-icon" data-ng-click="dislikePost(post)"><i class="fas fa-thumbs-down"></i></span> {{post.dislikesCount}}-->
+              <span (click)="retweetPost(post)" style="cursor: pointer" class="retweet-icon"><i class="fas fa-retweet"></i></span> {{post.retweets.length}}
             </div>
             <div class="comments">
               <!--<div class="more-comments">View more comments</div>-->
               <ul>
                 <li *ngFor="let comment of post.comments">
-                  <b>{{comment.user.userName}}: </b> {{comment.comment}}
+                  <b class="comment-username">{{comment.user.userName}}: </b> <span class="comment-comment">{{comment.comment}}</span>
                 </li>
               </ul>
               <form [formGroup]="commentForm">
@@ -77,3 +81,35 @@
 
 </div>
 
+<p-dialog *ngIf="retweet" header="Retweet" [(visible)]="display" [blockScroll]=true modal="true" dismissableMask="true" [draggable]="false">
+  <div id="retweet-form" class="row" style="padding:15px;">
+    <div class="col-xs-1 text-center">
+      <img style="width: 50px;margin-right:10px;" *ngIf="user.gender ==='female'" src="../../../assets/images/avatar/female.jpg" alt="User name"
+           class="rounded-circle img-user" />
+      <img style="width: 50px;margin-right:10px;" *ngIf="user.gender ==='male'" src="../../../assets/images/avatar/male.png" alt="User name"
+           class="rounded-circle img-user" />
+    </div>
+    <div class="col-xs-8 col-sm-offset-2 text-center" style="margin-bottom: 20px;">
+      <form [formGroup]="postCreateForm" (ngSubmit)="onSubmit(postCreateForm.value)">
+        <div class="form-group">
+          <div class="input-group">
+							<textarea formControlName="content"  rows="4" cols="50" class="form-control input-lg"
+                        placeholder="What is on your mind?"></textarea>
+            <button type="submit" class="input-group-addon btn btn-add btn-lg textarea-addon"
+            >Post</button>
+          </div>
+        </div>
+        <!--<button type="submit" class="btn btn-add btn-lg" ng-click="addPost()">Post</button>-->
+      </form>
+
+      <div style="text-align: left" class="retweet">
+        <img class="rounded-circle img-user" style="width: 30px;margin-left:10px;" src="../../../assets/images/avatar/female.jpg" />
+        <span style="font-weight: bold">{{retweet.createdUser.user.userName}}</span>
+        <span style="margin-left:15px;">{{retweet.createdDate | timeAgo}}</span>
+        <p style="margin-top:10px;margin-left:10px;padding-bottom:20px;">{{retweet.content}}</p>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

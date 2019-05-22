@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {CoreService} from "../core.service";
 import {Subscription} from "rxjs";
 import {CookieService} from "angular2-cookie/core";
@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit {
   userId: string;
   commentForm: FormGroup;
 
-  constructor(private coreService: CoreService, private messageService: MessageService, private cookieService: CookieService) { }
+  constructor(private coreService: CoreService, private messageService: MessageService, private cookieService: CookieService, private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     this.postCreateForm = new FormGroup({

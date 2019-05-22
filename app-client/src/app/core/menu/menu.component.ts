@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CoreService} from "../core.service";
 import { FileService } from 'src/app/services/file.service';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
@@ -14,9 +14,11 @@ export class MenuComponent implements OnInit {
 
   user: Object = {};
   stats:any;
+  query: string;
 
   constructor(private authenticationService:AuthenticationService, private coreService: CoreService,
-    private router: Router, private fileService:FileService, private cookieService:CookieService) { }
+    private router: Router, private fileService:FileService, private cookieService:CookieService,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
 
@@ -32,6 +34,7 @@ export class MenuComponent implements OnInit {
         this.stats = response;
       }
     );
+
   }
 
   logout() {
@@ -52,5 +55,10 @@ export class MenuComponent implements OnInit {
       );
     });
     reader.readAsDataURL(file);
+  }
+
+  searchUser(query) {
+    console.log(query);
+    this.router.navigate(['/search/' + query]);
   }
 }

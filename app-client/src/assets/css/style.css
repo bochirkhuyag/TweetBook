@@ -8,14 +8,13 @@ here you can change #f3ad00 main color.
     background: #f3ad00;
 }
 ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:window-inactive {
-    background: #3b5998;
+    background: #1DA1F2;
 }
 
 
 .btn-social {
     border: #f3ad00;
 }
-
 
 /*----------------------------------------------------------------
   [Table of contents]
@@ -100,7 +99,7 @@ video, img {
 
 header {
     min-height: 50px;
-    background: #3b5998;
+    background: #1DA1F2;
     font-size: 14px;
     padding: 15px 130px 10px 370px;
     position: fixed;
@@ -554,11 +553,15 @@ footer.login-footer {
 /*-----------------------------------------------------*/
 
 .like-icon {
-  color: #4267B2;
+  color: #1DA1F2;
 }
 
 .dislike-icon {
   color: #808080;
+}
+
+.retweet-icon {
+  color: #1DA1F2;
 }
 
 .textarea-addon {
@@ -569,14 +572,14 @@ footer.login-footer {
 }
 
 .btn-add {
-  background-color: #3b5998;
-  border-color: #3b5998;
+  background-color: #1DA1F2;
+  border-color: #1DA1F2;
   color: white;
 }
 
 .btn-small {
-  background-color: #3b5998;
-  border-color: #3b5998;
+  background-color: #1DA1F2;
+  border-color: #1DA1F2;
   color: white;
   height: 25px;
   font-size: 12px;
@@ -611,7 +614,7 @@ footer.login-footer {
 
 .center{
   font-family: 'Raleway', sans-serif;
-  background-color: #1abc9c;
+  /*background-color: #1abc9c;*/
   position: absolute;
   height: 100%;
   width: 100%;
@@ -694,4 +697,30 @@ h1 {
 .user-stats span {
   color: #000000;
   font-size: 20px;
+}
+
+.time-ago {
+  font-size: 12px;
+}
+
+.post-username {
+  font-size: 16px;
+}
+
+.comment-username {
+  font-size: 13px;
+}
+
+.comment-comment {
+  font-size: 13px;
+}
+
+.post-text {
+  font-size:16px;
+}
+
+.retweet {
+  background-color: #edf1f5;
+  padding: 5px;
+  border-radius: 5px;
 }
