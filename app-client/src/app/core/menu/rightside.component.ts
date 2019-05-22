@@ -61,19 +61,4 @@ export class RightSideComponent implements OnInit {
       }
     );
   }
-
-  unfollowUser(id) {
-    this.userService.unfollowUserService(id, this.userId).subscribe(
-      data => console.log(data),
-      error => {
-        console.log('error');
-        // this.msgs.push({severity: 'error', summary: error});
-      },
-      () => {
-        this.getSuggestedUsers();
-        this.wallComponent.getWallPosts();
-        this.messageService.add({severity:'success', summary:'', detail:'Follow success!'});
-      }
-    );
-  }
 }
