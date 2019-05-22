@@ -62,7 +62,10 @@ export class WallComponent implements OnInit {
         this.retweetId = this.retweet._id;
         tweet.retweeted.tweet = this.retweetId;
       }
-      tweet.photo = this.selectedFile.url;
+      if (this.selectedFile) {
+        tweet.photo = this.selectedFile.url;
+
+      }
 
       // console.log(individual);
       console.log(tweet);
