@@ -6,6 +6,7 @@ require('dotenv').config()
 var tweetsRouter = require('./routes/tweets');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
+var uploadRouter = require('./routes/upload');
 
 const cors = require('cors');
 const connStr = 'mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+'/'+process.env.DB_COLLECTION+'?retryWrites=true';
@@ -34,5 +35,7 @@ app.get('/', (req,res)=>{
 app.use('/api/users',usersRouter);
 app.use('/api/tweets',tweetsRouter);
 app.use('/api/auth',authRouter);
+app.use('/api/upload',uploadRouter);
+
 
 app.listen(3000,()=>{console.log('running on port 3000')});

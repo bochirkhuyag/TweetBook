@@ -6,6 +6,9 @@ var tweetSchema = new mongoose.Schema({
         type:String,
         required : true
     },
+    photo:{
+        type:String
+    },
     createdDate:{
         type:Date,
         default:Date.now
