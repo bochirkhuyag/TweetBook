@@ -10,7 +10,7 @@ const routes: Routes = [
   //wall
   {path: '', component: HomeComponent, children: [
       {path: '', component: WallComponent, canActivate: [AppGuardService]},
-      {path: 'profile', component: ProfileComponent, canActivate: [AppGuardService]},
+      {path: 'profile/:id', component: ProfileComponent, canActivate: [AppGuardService]},
       {path: 'search/:query', component: SearchComponent, canActivate: [AppGuardService]}
     ]}
 ];

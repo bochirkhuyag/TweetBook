@@ -8,6 +8,9 @@ import {Tweet} from "../../models/post";
 import {Comment} from "../../models/comment";
 import {UserService} from "../../user/user.service";
 import {ActivatedRoute} from "@angular/router";
+import {MenuComponent} from "../menu/menu.component";
+import {RightSideComponent} from "../menu/rightside.component";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-profile',
@@ -22,12 +25,14 @@ export class ProfileComponent implements OnInit {
   posts: any[];
   postCreateForm: FormGroup;
   user: any;
+  curUser: any;
   userId: any;
   commentForm: FormGroup;
   profile: any;
 
   users: any[];
   followers: any[];
+  isFollowing: boolean;
 
   constructor(
     private coreService: CoreService,
@@ -35,15 +40,23 @@ export class ProfileComponent implements OnInit {
     private cookieService: CookieService,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private rightSideComponent: RightSideComponent,
+    private authenticationService: AuthenticationService
   ) {
     this.route.params.subscribe
     (
-      params => this.userId = + params['id']
+      params => {
+        this.userId = params['id'];
+        this.getProfilePosts();
+        this.getUserFollowers(this.userId);
+        console.log(this.userId);
+      }
     );
   }
 
   ngOnInit() {
+    console.log("route changing");
     this.postCreateForm = new FormGroup({
       content: new FormControl('', Validators.required)
     });
@@ -54,11 +67,8 @@ export class ProfileComponent implements OnInit {
 
     this.user = JSON.parse(localStorage.user);
 
-    if (!this.userId) {
-      this.userId = this.cookieService.get('uid');
-    }
-    this.getProfilePosts();
-    this.getUserFollowers(this.userId);
+    // this.getProfilePosts();
+    // this.getUserFollowers(this.userId);
   }
 
   ngOnDestroy() {
@@ -148,5 +158,33 @@ export class ProfileComponent implements OnInit {
       });
 
     return this.usersSubscription;
+  }
+
+  followUser(id) {
+    this.userService.followUserService(id, this.userId).subscribe(
+      data => console.log(data),
+      error => {
+        console.log('error');
+        // this.msgs.push({severity: 'error', summary: error});
+      },
+      () => {
+        this.getUserFollowers(this.userId);
+        this.messageService.add({severity:'success', summary:'', detail:'Follow success!'});
+      }
+    );
+  }
+
+  unfollowUser(id) {
+    this.userService.unfollowUserService(id, this.userId).subscribe(
+      data => console.log(data),
+      error => {
+        console.log('error');
+        // this.msgs.push({severity: 'error', summary: error});
+      },
+      () => {
+        this.getUserFollowers(this.userId);
+        this.messageService.add({severity:'success', summary:'', detail:'Follow success!'});
+      }
+    );
   }
 }

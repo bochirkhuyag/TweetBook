@@ -151,7 +151,7 @@ router.post('/:userId/follow/',(req,res)=>{
 });
 
 //unfollow user
-router.delete('/:userId/follow/',(req,res)=>{
+router.post('/:userId/unfollow/',(req,res)=>{
     const userIdObj = mongoose.Types.ObjectId(req.body.user);
 
     User.updateOne({_id:req.params.userId},{$pull:{following:{user:userIdObj}}},(err,doc)=>{

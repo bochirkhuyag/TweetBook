@@ -18,7 +18,9 @@ import { SearchComponent } from './search/search.component';
     SharedModule
   ],
   providers: [
-    WallComponent
+    WallComponent,
+    MenuComponent,
+    RightSideComponent
   ]
 })
 export class CoreModule { }

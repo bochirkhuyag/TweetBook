@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoreService} from "../core.service";
@@ -15,26 +15,34 @@ export class MenuComponent implements OnInit {
   user: Object = {};
   stats:any;
   query: string;
+  userId: any;
 
   constructor(private authenticationService:AuthenticationService, private coreService: CoreService,
     private router: Router, private fileService:FileService, private cookieService:CookieService,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute) {
+
+  }
 
   ngOnInit() {
 
     const uid = this.cookieService.get('uid');
     this.authenticationService.getUserDetails(uid).subscribe(
       (response) =>{
-         this.user = response;
+        this.user = response;
+        this.userId = uid;
       }
     );
 
-    this.coreService.getStatsService(uid).subscribe(
+    this.getUserStats(uid);
+
+  }
+
+  getUserStats(id) {
+    this.coreService.getStatsService(id).subscribe(
       (response) =>{
         this.stats = response;
       }
     );
-
   }
 
   logout() {

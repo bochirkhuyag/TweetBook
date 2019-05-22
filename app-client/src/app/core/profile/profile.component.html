@@ -3,16 +3,34 @@
   <div class="row">
     <!--middle container-->
     <div class="col-md-8">
-      <div class="card-post" style="margin-top:16px;">
-        <h2>About</h2>
-        <ul class="profile-data">
-          <li><b>Username:</b> User</li>
-          <li><b>Fullname:</b> Asaad Saad</li>
-          <li><b>Description:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-        </ul>
+      <div *ngIf="profile" class="card-post" style="margin-top:16px;border-bottom: 4px solid #1DA1F2">
+        <div class="row">
+          <div class="col-xs-2 col-sm-2">
+            <img *ngIf="profile.gender ==='female'" src="../../../assets/images/avatar/female.jpg" alt="User name"
+                 class="rounded-circle img-user"/>
+            <img *ngIf="profile.gender ==='male'" src="../../../assets/images/avatar/male.png" alt="User name"
+                 class="rounded-circle img-user"/>
+          </div>
+          <div class="col-xs-9 col-sm-9">
+            <ul class="profile-data">
+              <li><b>Username:</b> {{profile.userName}}</li>
+              <li><b>Fullname:</b> {{profile.firstName}} {{profile.lastName}}</li>
+              <li><b>Joined:</b> {{profile.createdDate | timeAgo}}
+              </li>
+            </ul>
+            <div *ngIf="userId !== user._id">
+              <button (click)="followUser(profile._id)" style="margin-left:5px;" class="btn btn-small btn-sm">Follow</button>
+              <button (click)="unfollowUser(profile._id)" style="margin-left:10px;" class="btn btn-small btn-sm">Unfollow</button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div id="todo-form" class="row" style="padding:15px;">
+      <!--<div style="border-bottom: 4px solid #1DA1F2;margin-bottom: 10px;">-->
+
+      <!--</div>-->
+
+      <div *ngIf="userId === user._id" id="todo-form" class="row" style="padding:15px;">
         <div class="col-xs-8 col-sm-offset-2 text-center" style="margin-bottom: 20px;">
           <form [formGroup]="postCreateForm" (ngSubmit)="onSubmit(postCreateForm.value)">
             <div class="form-group">
@@ -78,7 +96,7 @@
                 </a>
               </div>
               <div class="col-md-8">
-                <h3 style="margin-top:10px;font-size:12px;margin-bottom:10px;"><a href="#" title="Profile">{{user._id.firstName}} {{user._id.lastName}}</a></h3>
+                <h3 style="margin-top:10px;font-size:12px;margin-bottom:10px;"><a  [routerLink]="['/profile', user._id._id]" title="Profile">{{user._id.firstName}} {{user._id.lastName}}</a></h3>
               </div>
             </div>
           </div>
@@ -96,7 +114,7 @@
                 </a>
               </div>
               <div class="col-md-8">
-                <h3 style="margin-top:10px;font-size:12px;margin-bottom:10px;"><a href="#" title="Profile">{{follower._id.firstName}} {{follower._id.lastName}}</a></h3>
+                <h3 style="margin-top:10px;font-size:12px;margin-bottom:10px;"><a [routerLink]="['/profile', follower._id._id]" title="Profile">{{follower._id.firstName}} {{follower._id.lastName}}</a></h3>
               </div>
             </div>
           </div>
